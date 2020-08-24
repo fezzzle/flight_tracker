@@ -36,8 +36,9 @@ async def find(icao):
     cursor = collection.find(filter=filter_, projection=projection_)
     async for icao_code in cursor:
         # await print_icao(icao_code)
-        found_planes.append(icao_code)
-    return found_planes
+        # found_planes.append(icao_code)
+        return icao_code
+    # return found_planes
 
 
 async def get_api_resp():
@@ -57,16 +58,21 @@ async def get_api_resp():
     return icao24_lst
 
 async def get_api_resp_fake():
-    time.sleep(1)
+    time.sleep(0.1)
     return [{'icao24': '47a721', 'baro_altitude': 2857.5, 'origin_country': 'Norway', 'velocity': 173.01, 'vertical_rate': -10.08, 'squawk': '2561'}, {'icao24': '780f3e', 'baro_altitude': 10058.4, 'origin_country': 'China', 'velocity': 268.33, 'vertical_rate': 0.33, 'squawk': '2557'}, {'icao24': '502cdc', 'baro_altitude': 457.2, 'origin_country': 'Latvia', 'velocity': 41.31, 'vertical_rate': -0.65, 'squawk': '2000'}]
 
 async def merge_data(api_res, db_res):
-    print(f"API RESPONSE: {api_res}")
-    print()
-    print()
-    print(f"DB RESPONSE: {db_res}")
-    print()
-    print()
+    merged = []
+    for i, _ in enumerate(api_res):
+        dct = api_res[i].copy()
+        try:
+            if api_res[i]['icao24'] == db_res[i]['icao24']:
+                dct.update(db_res[i])
+                merged.append(dct)
+        except IndexError:
+            continue
+
+    print(merged)
 
 
 
@@ -77,13 +83,14 @@ async def main():
     # icao_lst = await get_api_resp()
     for plane in task.result():
         res = await find(plane['icao24'])
-        if res != []:
+        if res != None:
             response.append(res)
 
     # print(f"LINE82: {response}")
     # print()
     # print(f"LINE77: {task.result()}")
     # print()
+    # print(response)
     await merge_data(task.result(), response)
     return
 
