@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Home</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
+  </head>
+  <header class="site-header">
+    <nav class="navbar navbar-dark bg-dark navbar-expand-md fixed-top">
+      <div class="container">
+        <a class="navbar-brand mr-4" href="/">Aviation</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarToggle">
+          <div class="navbar-nav mr-auto">
+            <a class="nav-item nav-link" href="{{  url_for('home') }}">Home</a>
+            <a class="nav-item nav-link" href="{{  url_for('aviation') }}">Current aircrafts</a>
+          </div>
+          <div class="navbar-nav">
+            <a class="nav-item nav-link" href="#">Create Post</a>
+            <!-- <a class="nav-item nav-link" href="#">Account</a> -->
+            <!-- <a class="nav-item nav-link" href="#">Logout</a> -->
+            <a class="nav-item nav-link" href="#">Login</a>
+            <a class="nav-item nav-link" href="#">Register</a>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main role="main" class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <h3>Current aircrafts in Estonia's Airspace:</h3>
+        <table class="table">
+            <thead>
+                <tr>
+                <th scope="col">#</th>
+                <th scope="col">Aircraft</th>
+                <th scope="col">Airline</th>
+                <th scope="col">Altitude</th>
+                <th scope="col">Registration</th>
+                <th scope="col">Destination</th>
+                <th scope="col">Flown over EST</th>
+                <th scope="col">Been to EETN</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for flight in flights %}
+                    <tr>
+                    <th scope="row">{{ loop.index }}</th>
+                    <td>{{ flight.aircraft }}</td>
+                    <td>{{ flight.airline }}</td>
+                    <td>{{ flight.alt }}</td>
+                    <td><a href="#">{{ flight.registration }}</a></td>
+                    <td>{{ flight.destination }}</td>
+                    <td>{{ flight.flown_est }}</td>
+                    <td>{{ flight.visit_eetn }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+</div>
+</body>
+</html>
