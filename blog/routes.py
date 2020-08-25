@@ -4,7 +4,8 @@ import asyncio
 from blog import search_from_db
 
 loop = asyncio.get_event_loop()
-
+flights = loop.run_until_complete(search_from_db.main())
+print(flights)
 
 
 @app.route('/')
@@ -18,7 +19,7 @@ def login():
 
 @app.route('/aviation')
 def aviation():
-    return render_template('aviation.html', flights=loop.run_until_complete(search_from_db.main()))
+    return render_template('aviation.html', flights=flights)
 
 @app.route('/post/<int:post_id>')
 def show_post(post_id):
@@ -30,28 +31,33 @@ def show_user_profile(user):
     return render_template('user.html', user=user)
 
 
-flights = [
-    {
-        "airline": "Lufthansa",
-        "aircraft": "Airbus A380",
-        "registration": "D-AIMA",
-        "flown_est": 5,
-        "visit_eetn": False,
-        "speed": "453kt",
-        "destination": "EDDF",
-        "alt": 35000
-    },
-    {
-        "airline": "British Airways",
-        "aircraft": "Boeing 777",
-        "registration": "G-STBE",
-        "flown_est": 21,
-        "visit_eetn": False,
-        "speed": "460kt",
-        "destination": "EGLL",
-        "alt": 35000
-    }
-]
+@app.route('/plane/<registration>')
+def plane(registration):
+    return render_template('plane.html', flights=flights, registration=registration)
+
+
+# flights = [
+#     {
+#         "airline": "Lufthansa",
+#         "aircraft": "Airbus A380",
+#         "registration": "D-AIMA",
+#         "flown_est": 5,
+#         "visit_eetn": False,
+#         "speed": "453kt",
+#         "destination": "EDDF",
+#         "alt": 35000
+#     },
+#     {
+#         "airline": "British Airways",
+#         "aircraft": "Boeing 777",
+#         "registration": "G-STBE",
+#         "flown_est": 21,
+#         "visit_eetn": False,
+#         "speed": "460kt",
+#         "destination": "EGLL",
+#         "alt": 35000
+#     }
+# ]
 
 
 posts = [

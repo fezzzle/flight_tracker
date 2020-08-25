@@ -42,8 +42,8 @@
                 <th scope="col">Aircraft</th>
                 <th scope="col">Model</th>
                 <th scope="col">Airline</th>
-                <th scope="col">Altitude</th>
-                <th scope="col">Speed</th>
+                <th scope="col">Altitude(f)</th>
+                <th scope="col">Speed(kph)</th>
                 <th scope="col">Registration</th>
                 <th scope="col">Flown over EST</th>
                 </tr>
@@ -56,9 +56,10 @@
                     <td>{{ flight.model }}</td>
                     <td>{{ flight.owner }}</td>
                     <td>{{ flight.baro_altitude }}</td>
-                    <td>{{ (flight.velocity * 3.6).round() }}</td>
-                    <td><a href="#">{{ flight.registration }}</a></td>
-                    <td>{{ flight.flown_est }}</td>
+                    <!-- <td>{{ (flight.velocity * 3.6)|round|int }}</td> -->
+                    <td>{{ flight.velocity }}</td>
+                    <td><a href="{{  url_for('plane', registration=flight.registration) }}">{{ flight.registration }}</a></td>
+                    <td>{{ 100}}</td>
                     </tr>
                 {% endfor %}
             </tbody>
