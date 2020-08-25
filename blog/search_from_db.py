@@ -2,7 +2,6 @@ import motor.motor_asyncio
 from opensky_api import OpenSkyApi
 import asyncio
 import pprint
-import time
 
 
 uri = "mongodb://localhost:27017/"
@@ -36,27 +35,26 @@ async def find(icao):
     }
     cursor = collection.find(filter=filter_, projection=projection_)
     async for icao_code in cursor:
-        # await print_icao(icao_code)
-        # found_planes.append(icao_code)
         return icao_code
-    # return found_planes
 
 
 async def get_api_resp():
-    payload_keys = ['icao24', 'baro_altitude', 'origin_country', 'velocity', 'vertical_rate', 'squawk']
+    payload_keys = ['icao24', 'baro_altitude', 'velocity', 'vertical_rate', 'longitude', 'latitude']
     icao24_lst = []
     try:
         api = OpenSkyApi("johnsmoth", "LennukidOnLahedad")
         states = api.get_states(time_secs=0, icao24=None, serials=None, bbox=(57,60,22,28))
         for s in states.states:
             payload_values = []
-            payload_values.extend([s.icao24, s.baro_altitude, s.origin_country, s.velocity, s.vertical_rate, s.squawk])
+            payload_values.extend([s.icao24, s.baro_altitude, s.velocity, s.vertical_rate, s.longitude, s.latitude])
             data = dict(zip(payload_keys, payload_values))
             icao24_lst.append(data)
     except Exception as e:
         print(e)
     return icao24_lst
 
+
+# Some testing code
 
 # async def get_api_resp_fake():
 #     time.sleep(0.1)
@@ -66,31 +64,21 @@ async def get_api_resp():
 # db_res = [{'icao24': '4007f6', 'registration': 'G-YMMK', 'manufacturername': 'Boeing Company', 'model': 'BOEING 777-236', 'operator': 'British Airways', 'owner': 'British Airways'}, {'icao24': '4840cf', 'registration': 'PH-BFT', 'manufacturername': 'Boeing', 'model': '747 406 SCD', 'operator': '', 'owner': 'Klm Royal Dutch Airlines'}, {'icao24': '4245a7', 'registration': 'VQ-BTY', 'manufacturername': 'Airbus', 'model': 'A319 112', 'operator': '', 'owner': 'Ural Airlines'}, {'icao24': '461f38', 'registration': 'OH-LVK', 'manufacturername': 'Airbus', 'model': 'A319 112', 'operator': '', 'owner': 'Finnair'}, {'icao24': '424407', 'registration': 'VQ-BBH', 'manufacturername': 'Boeing', 'model': '747 83QF', 'operator': '', 'owner': 'Silk Way West Airlines'}]
 
 async def merge_data(api_res, db_res):
-    # print(api_res)
-    # print(db_res)
     merged = []
     for i, _ in enumerate(api_res):
-        print(f"I = {i}")
         dct = api_res[i].copy()
-        print(f"LINE 75: {dct}")
         for j, _ in enumerate(db_res):
-            print(f"J = {j}")
             try:
                 if api_res[i]['icao24'] ==  db_res[j]['icao24']:
-                    print(f"api_res[i]: {api_res[i]}")
-                    print(f"db_res[j]: {db_res[j]}")
                     dct.update(db_res[j])
                     merged.append(dct)
-                    print(f"LINE84: {dct}")
             except IndexError:
                 continue
     return merged
-    print(merged)
 
 
 async def main():
     response = []
-    merged_data_response = []
     task = asyncio.create_task(get_api_resp(), name="api_call")
     await task
     for plane in task.result():
@@ -99,11 +87,13 @@ async def main():
             response.append(res)
     merged_data = await merge_data(task.result(), response)
     # merged_data = await merge_data(api_res, db_res)
-    # print(merged_data)
+    print(merged_data)
+    print(len(merged_data))
     return merged_data
 
 
 if __name__ == "__main__":
     loop = asyncio.get_event_loop()
     loop.run_until_complete(main())
+
 

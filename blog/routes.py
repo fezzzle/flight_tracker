@@ -1,5 +1,11 @@
 from flask import render_template
 from blog import app
+import asyncio
+from blog import search_from_db
+
+loop = asyncio.get_event_loop()
+
+
 
 @app.route('/')
 @app.route('/home')
@@ -12,7 +18,7 @@ def login():
 
 @app.route('/aviation')
 def aviation():
-    return render_template('aviation.html', flights=flights)
+    return render_template('aviation.html', flights=loop.run_until_complete(search_from_db.main()))
 
 @app.route('/post/<int:post_id>')
 def show_post(post_id):
