@@ -10,7 +10,7 @@
   <header class="site-header">
     <nav class="navbar navbar-dark bg-dark navbar-expand-md fixed-top">
       <div class="container">
-        <a class="navbar-brand mr-4" href="/">Aviation</a>
+        <a class="navbar-brand mr-4" href="/">Blog</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -18,11 +18,12 @@
           <div class="navbar-nav mr-auto">
             <a class="nav-item nav-link" href="{{  url_for('home') }}">Home</a>
             <a class="nav-item nav-link" href="{{  url_for('aviation') }}">Current aircrafts</a>
+            <a class="nav-item nav-link" href="{{  url_for('get_map') }}">MAP</a>
           </div>
           <div class="navbar-nav">
             <a class="nav-item nav-link" href="#">Create Post</a>
-            <!-- <a class="nav-item nav-link" href="#">Account</a> -->
-            <!-- <a class="nav-item nav-link" href="#">Logout</a> -->
+            <a class="nav-item nav-link" href="#">Account</a>
+            <a class="nav-item nav-link" href="#">Logout</a>
             <a class="nav-item nav-link" href="#">Login</a>
             <a class="nav-item nav-link" href="#">Register</a>
           </div>
@@ -54,10 +55,17 @@
                     <th scope="row">{{ loop.index }}</th>
                     <td>{{ flight.manufacturername }}</td>
                     <td>{{ flight.model }}</td>
+                    {% if flight.owner == "" %}
+                    <td>{{ flight.operator }}</td>
+                    {% else %}
                     <td>{{ flight.owner }}</td>
-                    <td>{{ flight.baro_altitude }}</td>
-                    <!-- <td>{{ (flight.velocity * 3.6)|round|int }}</td> -->
-                    <td>{{ flight.velocity }}</td>
+                    {% endif %}
+                    <!-- {% if flight.baro_altitude == None %} -->
+                    <!-- <td>{{ 0 }}</td> -->
+                    <!-- {% else %}  -->
+                    <td>{{ (flight.baro_altitude * 3.28)|round|int }}</td> 
+                    <!-- {% endif %} -->
+                    <td>{{ (flight.velocity * 3.6)|round|int }}</td>
                     <td><a href="{{  url_for('plane', registration=flight.registration) }}">{{ flight.registration }}</a></td>
                     <td>{{ 100}}</td>
                     </tr>

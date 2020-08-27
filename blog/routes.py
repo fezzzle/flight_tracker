@@ -1,4 +1,4 @@
-from flask import render_template
+from flask import render_template, jsonify
 from blog import app
 import asyncio
 from blog import search_from_db
@@ -18,6 +18,7 @@ def login():
     return render_template('login.html')
 
 @app.route('/aviation')
+@app.route('/aviation/')
 def aviation():
     return render_template('aviation.html', flights=flights)
 
@@ -36,28 +37,13 @@ def plane(registration):
     return render_template('plane.html', flights=flights, registration=registration)
 
 
-# flights = [
-#     {
-#         "airline": "Lufthansa",
-#         "aircraft": "Airbus A380",
-#         "registration": "D-AIMA",
-#         "flown_est": 5,
-#         "visit_eetn": False,
-#         "speed": "453kt",
-#         "destination": "EDDF",
-#         "alt": 35000
-#     },
-#     {
-#         "airline": "British Airways",
-#         "aircraft": "Boeing 777",
-#         "registration": "G-STBE",
-#         "flown_est": 21,
-#         "visit_eetn": False,
-#         "speed": "460kt",
-#         "destination": "EGLL",
-#         "alt": 35000
-#     }
-# ]
+@app.route('/aviation/flights_api')
+def get_flights():
+    return jsonify(flights)
+
+@app.route('/aviation/map')
+def get_map():
+    return render_template('map.html', flights=flights)
 
 
 posts = [
