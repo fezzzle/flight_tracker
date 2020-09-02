@@ -1,17 +1,12 @@
 from flask import render_template, jsonify
 from blog import app
-import asyncio
 from blog import search_from_db
-
-loop = asyncio.get_event_loop()
-flights = loop.run_until_complete(search_from_db.main())
-print(flights)
 
 
 @app.route('/')
 @app.route('/home')
 def home():
-    return render_template('home.html', flights=flights, posts=posts)
+    return render_template('home.html', flights=search_from_db.flights, posts=posts)
 
 @app.route('/login')
 def login():
@@ -20,7 +15,7 @@ def login():
 @app.route('/aviation')
 @app.route('/aviation/')
 def aviation():
-    return render_template('aviation.html', flights=flights)
+    return render_template('aviation.html', flights=search_from_db.flights)
 
 @app.route('/post/<int:post_id>')
 def show_post(post_id):
@@ -34,16 +29,16 @@ def show_user_profile(user):
 
 @app.route('/plane/<registration>')
 def plane(registration):
-    return render_template('plane.html', flights=flights, registration=registration)
+    return render_template('plane.html', flights=search_from_db.flights, registration=registration)
 
 
-@app.route('/aviation/flights_api')
+@app.route('/aviation/api')
 def get_flights():
-    return jsonify(flights)
+    return jsonify(search_from_db.geoJSON)
 
 @app.route('/aviation/map')
 def get_map():
-    return render_template('map.html', flights=flights)
+    return render_template('map.html', flights=search_from_db.flights)
 
 
 posts = [

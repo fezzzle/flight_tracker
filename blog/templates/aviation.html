@@ -46,7 +46,7 @@
                 <th scope="col">Altitude(f)</th>
                 <th scope="col">Speed(kph)</th>
                 <th scope="col">Registration</th>
-                <th scope="col">Flown over EST</th>
+                <th scope="col">Testing</th>
                 </tr>
             </thead>
             <tbody>
@@ -60,11 +60,11 @@
                     {% else %}
                     <td>{{ flight.owner }}</td>
                     {% endif %}
-                    <!-- {% if flight.baro_altitude == None %} -->
-                    <!-- <td>{{ 0 }}</td> -->
-                    <!-- {% else %}  -->
+                    {% if flight.on_ground == True %}
+                    <td>{{ 0 }}</td>
+                    {% else %} 
                     <td>{{ (flight.baro_altitude * 3.28)|round|int }}</td> 
-                    <!-- {% endif %} -->
+                    {% endif %}
                     <td>{{ (flight.velocity * 3.6)|round|int }}</td>
                     <td><a href="{{  url_for('plane', registration=flight.registration) }}">{{ flight.registration }}</a></td>
                     <td>{{ 100}}</td>

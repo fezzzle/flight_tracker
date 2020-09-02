@@ -4,61 +4,63 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Home</title>
-    <script src='https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.js'></script>
+    <script src="{{ url_for('static', filename='mapbox-gl.js') }}"></script>
+    
     <link href="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css" rel="stylesheet" />
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
     
   </head>
   <body>
-  <header class="site-header">
-    <nav class="navbar navbar-dark bg-dark navbar-expand-md fixed-top">
-      <div class="container">
-        <a class="navbar-brand mr-4" href="/">Blog</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarToggle">
-          <div class="navbar-nav mr-auto">
-            <a class="nav-item nav-link" href="{{  url_for('home') }}">Home</a>
-            <a class="nav-item nav-link" href="{{  url_for('aviation') }}">Current aircrafts</a>
-            <a class="nav-item nav-link" href="{{  url_for('get_map') }}">MAP</a>
-          </div>
-          <div class="navbar-nav">
-            <a class="nav-item nav-link" href="#">Create Post</a>
-            <a class="nav-item nav-link" href="#">Account</a>
-            <a class="nav-item nav-link" href="#">Logout</a>
-            <a class="nav-item nav-link" href="#">Login</a>
-            <a class="nav-item nav-link" href="#">Register</a>
+    <header class="site-header">
+      <nav class="navbar navbar-dark bg-dark navbar-expand-md fixed-top">
+        <div class="container">
+          <a class="navbar-brand mr-4" href="/">Blog</a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarToggle">
+            <div class="navbar-nav mr-auto">
+              <a class="nav-item nav-link" href="{{  url_for('home') }}">Home</a>
+              <a class="nav-item nav-link" href="{{  url_for('aviation') }}">Current aircrafts</a>
+              <a class="nav-item nav-link" href="{{  url_for('get_map') }}">MAP</a>
+            </div>
+            <div class="navbar-nav">
+              <a class="nav-item nav-link" href="#">Create Post</a>
+              <a class="nav-item nav-link" href="#">Account</a>
+              <a class="nav-item nav-link" href="#">Logout</a>
+              <a class="nav-item nav-link" href="#">Login</a>
+              <a class="nav-item nav-link" href="#">Register</a>
+            </div>
           </div>
         </div>
-      </div>
-    </nav>
-  </header>
-  <!-- <main role="main" class="container">  -->
-    <!-- <div class="row">
-      <div class="col-md-8"> -->
-        {% block content %}{% endblock %}
-      <!-- </div> -->
-      <!-- <div class="col-md-4">
-        {% for flight in flights %}
-        <div class="card mb-4 shadow-sm">
-            <div class="card-header">
+      </nav>
+    </header>
+    <!-- <main role="main" class="container">  -->
+      <!-- <div class="row">
+        <div class="col-md-8"> -->
+          {% block content %}{% endblock %}
+          <!-- </div> -->
+          <!-- <div class="col-md-4">
+            {% for flight in flights %}
+            <div class="card mb-4 shadow-sm">
+              <div class="card-header">
                 <h4 class="my-0 font-weight-normal">{{ flight.owner }}</h4>
+              </div>
+              <div class="card-body">
+                <h1 class="card-title pricing-card-title">{{ flight.manufacturername }}<small class="text-muted"></small></h1>
+                <h1 class="card-title pricing-card-title">{{ flight.model }}<small class="text-muted"></small></h1>
+                <ul class="list-unstyled mt-3 mb-4">
+                  <li>Registration: {{ flight.registration }}</li>
+                </ul>
+                <button type="button" class="btn btn-sm btn-block btn-primary">More info...</button>
+              </div>
             </div>
-            <div class="card-body">
-            <h1 class="card-title pricing-card-title">{{ flight.manufacturername }}<small class="text-muted"></small></h1>
-            <h1 class="card-title pricing-card-title">{{ flight.model }}<small class="text-muted"></small></h1>
-            <ul class="list-unstyled mt-3 mb-4">
-                <li>Registration: {{ flight.registration }}</li>
-            </ul>
-            <button type="button" class="btn btn-sm btn-block btn-primary">More info...</button>
-            </div>
+            {% endfor %}
+          </div>
         </div>
-        {% endfor %}
-      </div>
-    </div>
-  </main>
-</div>  -->
-</body>
-</html>
+      </main>
+    </div>  -->
+  </body>
+  </html>
+  
