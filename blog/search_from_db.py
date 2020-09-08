@@ -64,7 +64,7 @@ def geo_coords(data):
     coords = []
     for element in data:
         if element['on_ground'] != True:
-            coords.append({"geometry": {"type": "Point", "coordinates": [element['longitude'], element['latitude']]}, "type": "Feature", "properties": {"id": element['icao24']}})
+            coords.append({"geometry": {"type": "Point", "coordinates": [element['longitude'], element['latitude']]}, "type": "Feature", "properties": {"id": element['icao24'], "message": "Hello!", "iconSize": [60, 60]}})
     return coords
 
 
@@ -80,7 +80,8 @@ def get_data():
         merged_data_task = merge_data(api_res, response)
         for listener in listeners:
             listener.on_data(merged_data_task, geo_coords_task)
-
+        print("Got data from GET_DATA")
+        
         time.sleep(10)
 
 listeners = []
