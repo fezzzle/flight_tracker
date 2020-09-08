@@ -1,6 +1,8 @@
 from flask import render_template, jsonify
 from blog import app
 from blog import search_from_db
+from blog import scrape_photos
+
 
 
 class Observer:
@@ -41,7 +43,8 @@ def show_user_profile(user):
 
 @app.route('/plane/<registration>')
 def plane(registration):
-    return render_template('plane.html', flights=data_source.flights, registration=registration)
+    image = scrape_photos.plane_img(registration)
+    return render_template('plane.html', flights=data_source.flights, registration=registration, image=image)
 
 
 @app.route('/aviation/api')

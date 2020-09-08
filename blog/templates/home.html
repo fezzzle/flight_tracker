@@ -1,15 +1,39 @@
 {% extends "layout.html" %}
-<!-- {% block content %}
-    {% for post in posts %}
-        <article class="media content-section">
-          <div class="media-body">
-            <div class="article-metadata">
-              <a class="mr-2" href="#">{{ post.author }}</a>
-              <small class="text-muted">{{ post.date_posted }}</small>
+{% block content %}
+<main role="main" class="container">
+    <div class="row">
+        <div class="col-md-8">
+            {% for post in posts %}
+            <article class="media content-section">
+                <div class="media-body">
+                    <div class="article-metadata">
+                    <a class="mr-2" href="#">{{ post.author }}</a>
+                    <small class="text-muted">{{ post.date_posted }}</small>
+                  </div>
+                  <h2><a class="article-title" href="#">{{ post.title }}</a></h2>
+                  <p class="article-content">{{ post.content }}</p>
+                </div>
+              </article>
+              {% endfor %}
             </div>
-            <h2><a class="article-title" href="#">{{ post.title }}</a></h2>
-            <p class="article-content">{{ post.content }}</p>
+            <div class="col-md-4">
+              {% for flight in flights %}
+              <div class="card mb-4 shadow-sm">
+                <div class="card-header">
+                  <h4 class="my-0 font-weight-normal">{{ flight.owner }}</h4>
+                </div>
+                <div class="card-body">
+                  <h1 class="card-title pricing-card-title">{{ flight.manufacturername }}<small class="text-muted"></small></h1>
+                  <h1 class="card-title pricing-card-title">{{ flight.model }}<small class="text-muted"></small></h1>
+                  <ul class="list-unstyled mt-3 mb-4">
+                    <li>Registration: {{ flight.registration }}</li>
+                  </ul>
+                  <button type="button" class="btn btn-sm btn-block btn-primary">More info...</button>
+                </div>
+              </div>
+              {% endfor %}
+            </div>
           </div>
-        </article>
-    {% endfor %}
-{% endblock content %} -->
+        </main>
+    </body
+{% endblock content %}
