@@ -23,6 +23,10 @@ function utility(response) {
     return json
 }
 
+function get_geojson(resp) {
+    return JSON.parse(resp);
+}
+
 
 function addMarker(id, data) {
     // create a DOM element for the marker
@@ -87,11 +91,6 @@ function addMarker(id, data) {
 //         // pass
 //     }
 // }
-
-
-function get_geojson(resp) {
-    return JSON.parse(resp);
-}
 
 
 function main() {
