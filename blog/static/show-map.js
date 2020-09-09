@@ -9,15 +9,17 @@ let map = new mapboxgl.Map({
     zoom: 7
 });
 
-function main(response) {
-    let icao24 = []
+function utility(response) {
+    // let icao24 = []
     let json = get_geojson(response)
+    console.log("LINE 15: ", json)
     json.forEach(element => {
-        let dct = {}
+        // let dct = {}
         addSource(element.properties.id, element)
-        dct['icao24'] = element.properties.id
-        icao24.push(dct)
+        // dct['icao24'] = element.properties.id
+        // icao24.push(dct)
     });
+    // console.log("LINE 22: ", icao24)
     return json
 }
 
@@ -29,18 +31,22 @@ function addSource(id, data) {
     //         function(error, image) {
     //         if (error) throw error;
     //         map.addImage('plane', image);
-    
-            map.addSource(id, { type: 'geojson', data: data });
-            map.addLayer({
-                'id': id,
-                'type': 'symbol',
-                'source': id,
-                'layout': {
-                    // 'icon-size': 0.07,
-                    // 'icon-image': 'plane',
-                    'icon-image': 'airport-15'
-                }
-            });
+    try {
+        map.addSource(id, { type: 'geojson', data: data });
+        map.addLayer({
+            'id': id,
+            'type': 'symbol',
+            'source': id,
+            'layout': {
+                // 'icon-size': 0.07,
+                // 'icon-image': 'plane',
+                'icon-image': 'airport-15'
+            }
+        });
+    } catch {
+        console.log("Caught 'ID ALREADY EXISTS'")
+    }
+        
         // })
     // } catch (e) {
     //     // pass
@@ -52,16 +58,17 @@ function get_geojson(resp) {
 }
 
 
-function loadMap() {
+function main() {
     var request = new XMLHttpRequest();
     // make a GET request to parse the GeoJSON at the url
     request.open('GET', url, true);
     request.onload = function() {
         if (this.status >= 200 && this.status < 400) {
-            json = main(this.response)
-            console.log(json[0])
+            json = utility(this.response)
+            // console.log(json)
             // addMarker(json)
             json.forEach(element => {
+                console.log("LINE69 :", element)
                 map.getSource(element.properties.id).setData(element);
             });
         }
@@ -77,7 +84,7 @@ function setIntervalAndExecute(fn, t) {
    
 }
 
-setIntervalAndExecute(loadMap, 10000);
+setIntervalAndExecute(main, 10000);
 
 
 
