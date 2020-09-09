@@ -45,12 +45,16 @@ def show_user_profile(user):
 def plane(registration):
     image = scrape_photos.plane_img(registration)
     # Get certain plane from data to send it to Flask
-    for plane in data_source.flights:
-        if plane['registration'] == registration:
-            flight = plane
-            print(f"LINE 52: {plane}")
+    # Not sure if this works at the moment
+    try:
+        for plane in data_source.flights:
+            if plane['registration'] == registration:
+                flight = plane
+        return render_template('plane.html', flight=flight, registration=registration, image=image)
+    except Exception:
+        print("This plane does not exist in our database!")
+        return render_template(plane.html)
 
-    return render_template('plane.html', flight=flight, registration=registration, image=image)
 
 
 @app.route('/aviation/api')

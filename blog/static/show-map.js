@@ -15,43 +15,56 @@ function utility(response) {
     console.log("LINE 15: ", json)
     json.forEach(element => {
         // let dct = {}
-        addSource(element.properties.id, element)
+        // addIcon(element.properties.id, element)
+        addMarker(element.properties.id, element)
         // dct['icao24'] = element.properties.id
         // icao24.push(dct)
     });
-    // console.log("LINE 22: ", icao24)
     return json
 }
 
 
-function addSource(id, data) {
-    // try {
-    //     map.loadImage(
-    //         'https://upload.wikimedia.org/wikipedia/commons/1/1e/Airplane_silhouette.png',
-    //         function(error, image) {
-    //         if (error) throw error;
-    //         map.addImage('plane', image);
-    try {
-        map.addSource(id, { type: 'geojson', data: data });
-        map.addLayer({
-            'id': id,
-            'type': 'symbol',
-            'source': id,
-            'layout': {
-                // 'icon-size': 0.07,
-                // 'icon-image': 'plane',
-                'icon-image': 'airport-15'
-            }
-        });
-    } catch {
-        console.log("Caught 'ID ALREADY EXISTS'")
-    }
-        
-        // })
-    // } catch (e) {
-    //     // pass
-    // }
+
+
+
+function addMarker(id, data) {
+    let el = document.createElement('div');
+    console.log("DATA COOORDS", data.geometry.coordinates)
+    map.addSource(id, { type: 'geojson', data: data });
+    el.className = 'marker';
+    el.style.backgroundImage = 'url(https://upload.wikimedia.org/wikipedia/commons/7/7d/Plane_icon.svg)';
+    // el.style.width = '20px';
+    // el.style.height = '20px'
+    new mapboxgl.Marker(el)
+        .setLngLat(data.geometry.coordinates)
+        .addTo(map);
 }
+    
+
+
+// function addIcon(id, data) {
+//     try {
+//         map.loadImage(
+//             'http://127.0.0.1:5000/static/icon_default.png',
+//             function(error, image) {
+//             map.addImage('plane', image);
+//             map.addSource(id, { type: 'geojson', data: data });
+//             map.addLayer({
+//                 'id': id,
+//                 'type': 'symbol',
+//                 'source': id,
+//                 'layout': {
+//                     'icon-size': 0.15,
+//                     'icon-image': 'plane',
+//                     // 'icon-image': 'airport-15'
+//                 }
+//             });        
+//         })
+//     } catch (e) {
+//         // pass
+//     }
+// }
+
 
 function get_geojson(resp) {
     return JSON.parse(resp);
@@ -64,11 +77,8 @@ function main() {
     request.open('GET', url, true);
     request.onload = function() {
         if (this.status >= 200 && this.status < 400) {
-            json = utility(this.response)
-            // console.log(json)
-            // addMarker(json)
+            json = utility(this.response);
             json.forEach(element => {
-                console.log("LINE69 :", element)
                 map.getSource(element.properties.id).setData(element);
             });
         }
@@ -81,7 +91,6 @@ function setIntervalAndExecute(fn, t) {
         fn();
         return(setInterval(fn, t));
     });
-   
 }
 
 setIntervalAndExecute(main, 10000);
