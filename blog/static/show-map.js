@@ -24,21 +24,44 @@ function utility(response) {
 }
 
 
-
-
-
 function addMarker(id, data) {
-    let el = document.createElement('div');
-    console.log("DATA COOORDS", data.geometry.coordinates)
-    map.addSource(id, { type: 'geojson', data: data });
+    // create a DOM element for the marker
+    var el = document.createElement('div');
     el.className = 'marker';
-    el.style.backgroundImage = 'url(https://upload.wikimedia.org/wikipedia/commons/7/7d/Plane_icon.svg)';
-    // el.style.width = '20px';
-    // el.style.height = '20px'
+    el.style.backgroundImage = 'url(http://127.0.0.1:5000/static/marker.png)';
+    el.style.width = data.properties.iconSize[0] + 'px';
+    el.style.height = data.properties.iconSize[1] + 'px';
+        
+    el.addEventListener('click', function () {
+    window.alert(data.properties.message);
+    });
+        
+    // add marker to map
     new mapboxgl.Marker(el)
-        .setLngLat(data.geometry.coordinates)
-        .addTo(map);
+    .setLngLat(data.geometry.coordinates)
+    .setRotation(90)
+    .addTo(map);
 }
+
+
+
+
+// function addMarker(id, data) {
+//     let el = document.createElement('div');
+//     map.addSource(id, { type: 'geojson', data: data });
+//     el.className = 'marker';
+
+//     el.style.width = data.properties.iconSize[0] + 'px';
+//     el.style.height = data.properties.iconSize[1] + 'px';
+
+//     el.addEventListener('click', function() {
+//     window.alert(data.properties.message);
+//     });
+
+//     new mapboxgl.Marker(el)
+//         .setLngLat(data.geometry.coordinates)
+//         .addTo(map);
+// }
     
 
 
@@ -78,9 +101,9 @@ function main() {
     request.onload = function() {
         if (this.status >= 200 && this.status < 400) {
             json = utility(this.response);
-            json.forEach(element => {
-                map.getSource(element.properties.id).setData(element);
-            });
+            // json.forEach(element => {
+            //     map.getSource(element.properties.id).setData(element);
+            // });
         }
     };
     request.send();

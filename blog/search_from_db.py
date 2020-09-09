@@ -64,7 +64,7 @@ def geo_coords(data):
     coords = []
     for element in data:
         if element['on_ground'] != True:
-            coords.append({"geometry": {"type": "Point", "coordinates": [element['longitude'], element['latitude']]}, "type": "Feature", "properties": {"id": element['icao24'], "message": "Hello!", "iconSize": [60, 60]}})
+            coords.append({"geometry": {"type": "Point", "coordinates": [element['longitude'], element['latitude']]}, "type": "Feature", "properties": {"id": element['icao24'], "message": "Hello!", "iconSize": [30, 30]}})
     return coords
 
 
