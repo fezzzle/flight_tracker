@@ -23,12 +23,12 @@ function main(response) {
 
 
 function addSource(id, data) {
-    try {
-        map.loadImage(
-            'https://upload.wikimedia.org/wikipedia/commons/1/1e/Airplane_silhouette.png',
-            function(error, image) {
-            if (error) throw error;
-            map.addImage('plane', image);
+    // try {
+    //     map.loadImage(
+    //         'https://upload.wikimedia.org/wikipedia/commons/1/1e/Airplane_silhouette.png',
+    //         function(error, image) {
+    //         if (error) throw error;
+    //         map.addImage('plane', image);
     
             map.addSource(id, { type: 'geojson', data: data });
             map.addLayer({
@@ -36,14 +36,15 @@ function addSource(id, data) {
                 'type': 'symbol',
                 'source': id,
                 'layout': {
-                    'icon-size': 0.07,
-                    'icon-image': 'plane'
+                    // 'icon-size': 0.07,
+                    // 'icon-image': 'plane',
+                    'icon-image': 'airport-15'
                 }
             });
-        })
-    } catch (e) {
-        // pass
-    }
+        // })
+    // } catch (e) {
+    //     // pass
+    // }
 }
 
 function get_geojson(resp) {
@@ -58,7 +59,7 @@ function loadMap() {
     request.onload = function() {
         if (this.status >= 200 && this.status < 400) {
             json = main(this.response)
-            console.log(json)
+            console.log(json[0])
             // addMarker(json)
             json.forEach(element => {
                 map.getSource(element.properties.id).setData(element);

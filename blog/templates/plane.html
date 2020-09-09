@@ -1,4 +1,23 @@
 {% extends "layout.html" %}
 {% block content %}
-    <img src={{ image }} >
+<main role="main" class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="media content-section">
+              <div class="media-body">
+                <img class="plane-img" src={{ image }} >
+                  <div class="plane-info">
+                    <p>Manufacturer: {{ flight.manufacturername }}</p>
+                    <p>Model: {{ flight.model }}</p>
+                    <p>Owner: {{ flight.owner }}</p>
+                    <p>Registration: {{ flight.registration }}</p>
+                    <p>Speed: {{ (flight.velocity * 3.6)|round|int }}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>  
+      </main>
+  </body>
+
 {% endblock content %}

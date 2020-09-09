@@ -1,3 +1,8 @@
+.media {
+  margin-left: 150px;
+  max-width: 70%;
+}
+
 body {
   background: #fafafa;
   margin-top: 5rem;
@@ -11,11 +16,12 @@ html {
     font-size: 16px;
   }
 }
+
 .content-section {
   background: #ffffff;
   padding: 10px 20px;
   border: 1px solid #dddddd;
-  border-radius: 3px;
+  border-radius: 10px;
   margin-bottom: 20px;
 }
 
@@ -29,4 +35,15 @@ html {
 
 .card-deck .card {
   max-width: 220px;
+}
+
+.plane-img {
+  border: 1px solid #dddddd;
+  margin-left: 100px;
+  margin-top: 20px;
+  width: 400px;
+}
+
+.plane-info {
+  margin-top: 50px;
 }

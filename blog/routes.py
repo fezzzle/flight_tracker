@@ -44,7 +44,13 @@ def show_user_profile(user):
 @app.route('/plane/<registration>')
 def plane(registration):
     image = scrape_photos.plane_img(registration)
-    return render_template('plane.html', flights=data_source.flights, registration=registration, image=image)
+    # Get certain plane from data to send it to Flask
+    for plane in data_source.flights:
+        if plane['registration'] == registration:
+            flight = plane
+            print(f"LINE 52: {plane}")
+
+    return render_template('plane.html', flight=flight, registration=registration, image=image)
 
 
 @app.route('/aviation/api')
