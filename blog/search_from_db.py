@@ -70,17 +70,26 @@ def geo_coords(data):
 
 def get_data():
     while True:
-        response = []
+        planes_in_db = []
+        planes_not_in_db = []
         api_res = get_api_resp()
         for plane in api_res:
             res = find(plane['icao24'])
             if res != None:
-                response.append(res)
-        get_merged_data = merge_data(api_res, response)
-        get_geo_json = geo_coords(get_merged_data)
-        print(get_geo_json)
+                planes_in_db.append(res)
+            elif res == None and plane['on_ground']:
+                pass
+            else:
+                planes_not_in_db.append(plane)
+
+        merge_data_in_DB = merge_data(api_res, planes_in_db)
+        get_geo_json = geo_coords(merge_data_in_DB)
         for listener in listeners:
-            listener.on_data(get_merged_data, get_geo_json)
+            listener.on_data(merge_data_in_DB, get_geo_json)
+
+        print(f"PLANES IN DB: {merge_data_in_DB}")
+        print(f"PLANES NOT IN DB: {planes_not_in_db}")
+        print(f"TOTAL PLANES IN AIRSPACE: {len(merge_data_in_DB)} + {len(planes_not_in_db)}")
         time.sleep(10)
 
 listeners = []
