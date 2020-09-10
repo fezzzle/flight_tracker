@@ -1,0 +1,16 @@
+{
+    "registration": "ES-FEZ",
+    "manufacturername": "Airbus",
+    "model": "A320",
+    "flights": [{
+        "enter": "Somedatestamp",
+        "left": "SomeOtherDateStamp",
+        "flight": [
+            [{
+                "latitude": 57.5,
+                "longitude": 21.97,
+                "time_stamp": "SomeTimeStamp"
+            }]
+        ]
+    }]
+}
