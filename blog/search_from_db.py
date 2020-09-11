@@ -3,7 +3,7 @@ from opensky_api import OpenSkyApi
 import pprint
 import threading
 import time
-from blog import settings as ENV
+# from blog import settings as ENV
 
 
 uri = "mongodb://localhost:27017/"
@@ -35,7 +35,8 @@ def get_api_resp():
     payload_keys = ['icao24', 'baro_altitude', 'velocity', 'vertical_rate', 'longitude', 'latitude', 'on_ground']
     icao24_lst = []
     try:
-        api = OpenSkyApi(ENV.OPEN_SKY_API_USER, ENV.OPEN_SKY_API_PW)
+        # api = OpenSkyApi(ENV.OPEN_SKY_API_USER, ENV.OPEN_SKY_API_PW)
+        api = OpenSkyApi("johnsmoth", "ILovePlanes098")
         states = api.get_states(time_secs=0, icao24=None, serials=None, bbox=(57.5,59,21.5,28))
         for s in states.states:
             payload_values = []
@@ -69,6 +70,41 @@ def geo_coords(data):
     return coords
 
 
+def airspace_save_point(data):
+    collection = db.get_collection("planes_visited")
+    for plane in data:
+        cursor = collection.find_one({"registration": plane['registration']})
+        # cursor = collection.find_one({"registration": "B-2081"})
+        # print(f"LINE78: {cursor}")
+
+        # If plane is not in the DB, add it
+        if cursor != None:
+            print("Got the plane!")
+        else:
+            data_to_store = {
+                "registration": plane['registration'],
+                "manufacturername": plane['manufacturername'],
+                "model": plane['model'],
+                "flights": [
+                    {
+                        "enter": time.time(),
+                        "left": None,
+                        "flight_data": [
+                            [{
+                                "latitude": plane['latitude'],
+                                "longitude": plane['longitude'],
+                                "time_stamp": time.time()
+                            }]
+                        ]
+                    }
+                ]
+            }
+            db.planes_visited.insert_one(data_to_store)
+            print("No, this plane does not exist in the DB. Adding it")
+
+
+
+
 def get_data():
     while True:
         planes_in_db = []
@@ -84,13 +120,14 @@ def get_data():
                 planes_not_in_db.append(plane)
 
         merge_data_in_DB = merge_data(api_res, planes_in_db)
+        airspace_save_point(merge_data_in_DB)
         get_geo_json = geo_coords(merge_data_in_DB)
         for listener in listeners:
             listener.on_data(merge_data_in_DB, get_geo_json)
 
-        print(f"PLANES IN DB: {merge_data_in_DB}")
-        print(f"PLANES NOT IN DB: {planes_not_in_db}")
-        print(f"TOTAL PLANES IN AIRSPACE: {len(merge_data_in_DB)} + {len(planes_not_in_db)}")
+        # print(f"PLANES IN DB: {merge_data_in_DB}")
+        # print(f"PLANES NOT IN DB: {planes_not_in_db}")
+        # print(f"TOTAL PLANES IN AIRSPACE: {len(merge_data_in_DB)} + {len(planes_not_in_db)}")
         time.sleep(10)
 
 listeners = []
