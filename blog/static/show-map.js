@@ -37,7 +37,7 @@ function addMarker(id, data) {
     el.style.height = data.properties.iconSize[1] + 'px';
         
     el.addEventListener('click', function () {
-    window.alert(data.properties.message);
+    window.alert(data.properties.velocity, data.properties.manufacturer, data.properties.model, data.properties.altitude);
     });
         
     // add marker to map

@@ -66,20 +66,37 @@ def geo_coords(data):
     coords = []
     for element in data:
         if element['on_ground'] != True:
-            coords.append({"geometry": {"type": "Point", "coordinates": [element['longitude'], element['latitude']]}, "type": "Feature", "properties": {"id": element['registration'], "message": "Hello!", "iconSize": [30, 30]}})
+            coords.append(
+                {
+                    "geometry": {
+                        "type": "Point", "coordinates": [element['longitude'], element['latitude']]}, 
+                        "type": "Feature", "properties": {
+                            "id": element['registration'], 
+                            "speed": element['velocity'], 
+                            "altitude": element['baro_altitude'], 
+                            "manufacturer": element['manufacturername'], 
+                            "model": element['model'], 
+                            "iconSize": [30, 30]}})
     return coords
 
 
 def airspace_save_point(data):
+
+
     collection = db.get_collection("planes_visited")
     for plane in data:
         cursor = collection.find_one({"registration": plane['registration']})
+        # print(type(cursor))
+        # print(cursor['registration'])
         # cursor = collection.find_one({"registration": "B-2081"})
         # print(f"LINE78: {cursor}")
 
         # If plane is not in the DB, add it
         if cursor != None:
             print("Got the plane!")
+            collection.update( { "registration": plane['registration'] }, { "$addToSet": {  "flights.0.flight_data": {"latitude": plane['latitude'], "longitude": plane['longitude'], "time_stamp": time.time()} } } )
+            # db.planes_visited.update( { "registration": "G-VNEW" }, { $addToSet: {  "flights.0.flight_data": {"latitude": 35.333, "longitude": 38.55555} } } )
+
         else:
             data_to_store = {
                 "registration": plane['registration'],
@@ -90,11 +107,11 @@ def airspace_save_point(data):
                         "enter": time.time(),
                         "left": None,
                         "flight_data": [
-                            [{
+                            {
                                 "latitude": plane['latitude'],
                                 "longitude": plane['longitude'],
                                 "time_stamp": time.time()
-                            }]
+                            }
                         ]
                     }
                 ]
