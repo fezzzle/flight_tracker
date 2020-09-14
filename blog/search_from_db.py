@@ -65,6 +65,7 @@ def merge_data(api_res, db_res):
 def geo_coords(data):
     coords = []
     for element in data:
+        print(element)
         if element['on_ground'] != True:
             coords.append(
                 {
@@ -74,7 +75,8 @@ def geo_coords(data):
                             "id": element['registration'], 
                             "speed": element['velocity'], 
                             "altitude": element['baro_altitude'], 
-                            "manufacturer": element['manufacturername'], 
+                            "manufacturer": element['manufacturername'],
+                            "owner": element['owner'],
                             "model": element['model'], 
                             "iconSize": [30, 30]}})
     return coords

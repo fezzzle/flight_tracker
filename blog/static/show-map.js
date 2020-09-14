@@ -28,22 +28,32 @@ function get_geojson(resp) {
 }
 
 
+
 function addMarker(id, data) {
+    let html = `
+    REG: ${data.properties.id},
+    SPD: ${data.properties.speed},
+    OWN: ${data.properties.owner},
+    MKE: ${data.properties.model},
+    `
     // create a DOM element for the marker
     var el = document.createElement('div');
     el.className = 'marker';
     el.style.backgroundImage = 'url(http://127.0.0.1:5000/static/marker.png)';
     el.style.width = data.properties.iconSize[0] + 'px';
     el.style.height = data.properties.iconSize[1] + 'px';
-        
-    el.addEventListener('click', function () {
-    window.alert(data.properties.velocity, data.properties.manufacturer, data.properties.model, data.properties.altitude);
-    });
-        
+
+    console.log("ROW 39: ", data.geometry.coordinates)
+
     // add marker to map
     new mapboxgl.Marker(el)
     .setLngLat(data.geometry.coordinates)
     .setRotation(90)
+    .addTo(map);
+
+    var popup = new mapboxgl.Popup({maxWidth: '300px'})
+    .setLngLat(data.geometry.coordinates)
+    .setHTML(html)
     .addTo(map);
 }
 
@@ -100,6 +110,7 @@ function main() {
     request.onload = function() {
         if (this.status >= 200 && this.status < 400) {
             json = utility(this.response);
+            console.log(json)
             // json.forEach(element => {
             //     map.getSource(element.properties.id).setData(element);
             // });
