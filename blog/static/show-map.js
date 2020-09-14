@@ -12,9 +12,7 @@ let map = new mapboxgl.Map({
 });
 
 function main() {
-    clearMarkers()
-    clearPopups()
-
+    removeIcons()
     var request = new XMLHttpRequest();
     // make a GET request to parse the GeoJSON at the url
     request.open('GET', url, true);
@@ -23,6 +21,36 @@ function main() {
             let json = get_geojson(this.response)
             json.forEach(element => {
                 setMarkerData(element)
+                console.log("LINE 24: ", element)
+                try {
+                    console.log("LINE 26: ", element.geometry.coordinates)
+                    map.addSource(element.properties.id, {
+                        'type': 'geojson',
+                        'data': {
+                            'type': 'Feature',
+                            'properties': {},
+                            'geometry': {
+                                'type': 'LineString',
+                                'coordinates': element.geometry.coordinates
+                            }
+                        }
+                    });
+                    map.addLayer({
+                        'id': element.properties.id,
+                        'type': 'line',
+                        'source': element.properties.id,
+                        'layout': {
+                            'line-join': 'round',
+                            'line-cap': 'round'
+                        },
+                        'paint': {
+                        'line-color': '#888',
+                        'line-width': 8
+                        }
+                    }); 
+                } catch (error) {
+                    console.log(error)
+                };
             });
         }
     };
@@ -39,6 +67,7 @@ function setMarkerData(data) {
     SPD: ${data.properties.speed},
     OWN: ${data.properties.owner},
     MKE: ${data.properties.model},
+    ALT: ${data.properties.altitude}
     `
     // create a DOM element for the marker
     var el = document.createElement('div');
@@ -53,7 +82,7 @@ function setMarkerData(data) {
     .addTo(map);
     markers.push(marker)
 
-    var popup = new mapboxgl.Popup({maxWidth: '300px'})
+    var popup = new mapboxgl.Popup({maxWidth: '300px', closeOnClick: false})
     .setLngLat(data.geometry.coordinates)
     .setHTML(html)
     .addTo(map);
@@ -67,17 +96,14 @@ function setIntervalAndExecute(fn, t) {
     });
 }
 
-function clearMarkers() {
+function removeIcons() {
     markers.forEach((marker) => marker.remove());
     markers = [];
-  }
-
-function clearPopups() {
     popups.forEach((popup) => popup.remove());
     popups = [];
-}
+  }
 
-setIntervalAndExecute(main, 10000);
+setIntervalAndExecute(main, 5000);
 
 
 

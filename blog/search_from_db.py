@@ -83,16 +83,9 @@ def geo_coords(data):
 
 
 def airspace_save_point(data):
-
-
     collection = db.get_collection("planes_visited")
     for plane in data:
         cursor = collection.find_one({"registration": plane['registration']})
-        # print(type(cursor))
-        # print(cursor['registration'])
-        # cursor = collection.find_one({"registration": "B-2081"})
-        # print(f"LINE78: {cursor}")
-
         # If plane is not in the DB, add it
         if cursor != None:
             print("Got the plane!")
