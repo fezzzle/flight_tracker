@@ -176,3 +176,5 @@ cython_debug/
 ehthumbs.db
 Thumbs.db
 venv/*
+mapbox_line.html
+coords.txt

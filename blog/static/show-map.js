@@ -1,4 +1,5 @@
-const url = 'http://127.0.0.1:5000/aviation/api';
+const currentFlights = 'http://127.0.0.1:5000/aviation/api';
+const flightData = 'http://127.0.0.1:5000/aviation/flight_data';
 let markers = [];
 let popups = [];
 
@@ -13,44 +14,61 @@ let map = new mapboxgl.Map({
 
 function main() {
     removeIcons()
+    callCurrentFlights()
+    callFlightDataFromDB()
+}
+
+function callFlightDataFromDB() {
     var request = new XMLHttpRequest();
-    // make a GET request to parse the GeoJSON at the url
-    request.open('GET', url, true);
+    request.open('GET', flightData, true);
+    request.onload = function() {
+        let flights = []
+        if (this.status >= 200 && this.status < 400) {
+            let api_resp = JSON.parse(this.response)
+            console.log(api_resp.flights[0].flight_data)
+            let planeFlights = api_resp.flights[0].flight_data
+            planeFlights.forEach((flight) => {
+                flights.push(Array.from([flight.longitude, flight.latitude]))
+            });
+            map.addSource('route', {
+                'type': 'geojson',
+                'data': {
+                    'type': 'Feature',
+                    'properties': {},
+                    'geometry': {
+                        'type': 'LineString',
+                        'coordinates': flights
+                    }
+                }
+            });
+            map.addLayer({
+                'id': 'route',
+                'type': 'line',
+                'source': 'route',
+                'layout': {
+                    'line-join': 'round',
+                    'line-cap': 'round'
+                },
+                'paint': {
+                    'line-color': '#89c',
+                    'line-width': 2
+                }
+            });
+
+        };
+    };
+    request.send();
+}
+
+function callCurrentFlights() {
+    var request = new XMLHttpRequest();
+
+    request.open('GET', currentFlights, true);
     request.onload = function() {
         if (this.status >= 200 && this.status < 400) {
             let json = get_geojson(this.response)
             json.forEach(element => {
                 setMarkerData(element)
-                console.log("LINE 24: ", element)
-                try {
-                    console.log("LINE 26: ", element.geometry.coordinates)
-                    map.addSource(element.properties.id, {
-                        'type': 'geojson',
-                        'data': {
-                            'type': 'Feature',
-                            'properties': {},
-                            'geometry': {
-                                'type': 'LineString',
-                                'coordinates': element.geometry.coordinates
-                            }
-                        }
-                    });
-                    map.addLayer({
-                        'id': element.properties.id,
-                        'type': 'line',
-                        'source': element.properties.id,
-                        'layout': {
-                            'line-join': 'round',
-                            'line-cap': 'round'
-                        },
-                        'paint': {
-                        'line-color': '#888',
-                        'line-width': 8
-                        }
-                    }); 
-                } catch (error) {
-                    console.log(error)
-                };
             });
         }
     };

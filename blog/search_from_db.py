@@ -10,6 +10,20 @@ uri = "mongodb://localhost:27017/"
 client = MongoClient(uri)
 db = client.get_database("aviation")
 
+#db.planes_visited.find({"registration": "B-6533"})
+# [{'icao24': '4601f5', 'baro_altitude': 4884.42, 'velocity': 121.93, 'vertical_rate': 0.33, 'longitude': 25.1581, 'latitude': 58.6924, 'on_ground': False, 'registration': 'OH-ATH', 'manufacturername': 'Avions De Transport Regional', 'model': 'ATR 72 500', 'operator': '', 'owner': 'Nordic Regional Airlines'}]
+
+
+def get_one_plane_coords():
+    # plane_coords = []
+    collection = db.get_collection("planes_visited")
+    cursor = collection.find({"registration": "B-6533"}, projection= {"_id": 0})
+    for plane in cursor:
+        return plane
+        # plane_coords.append(plane)
+    # return plane_coords
+    
+
 
 def find(icao):
     found_planes = []
@@ -65,7 +79,7 @@ def merge_data(api_res, db_res):
 def geo_coords(data):
     coords = []
     for element in data:
-        print(element)
+        # print(element)
         if element['on_ground'] != True:
             coords.append(
                 {
@@ -132,10 +146,13 @@ def get_data():
                 planes_not_in_db.append(plane)
 
         merge_data_in_DB = merge_data(api_res, planes_in_db)
+        # print(f"MERGED DATA: {merge_data_in_DB}")
         airspace_save_point(merge_data_in_DB)
+        flight_data = get_one_plane_coords()
+        print(f"FLIGHT DATA: {flight_data}")
         get_geo_json = geo_coords(merge_data_in_DB)
         for listener in listeners:
-            listener.on_data(merge_data_in_DB, get_geo_json)
+            listener.on_data(merge_data_in_DB, get_geo_json, flight_data)
 
         # print(f"PLANES IN DB: {merge_data_in_DB}")
         # print(f"PLANES NOT IN DB: {planes_not_in_db}")

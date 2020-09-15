@@ -9,9 +9,11 @@ class Observer:
     def __init__(self):
         self.flights = None
         self.geoJSON = None
-    def on_data(self, flights, geoJSON):
+        self.flight_data = None
+    def on_data(self, flights, geoJSON, flight_data):
         self.flights = flights
         self.geoJSON = geoJSON
+        self.flight_data = flight_data
 
 data_source = Observer()
 search_from_db.add_listener(data_source)
@@ -60,6 +62,11 @@ def plane(registration):
 @app.route('/aviation/api')
 def get_flights():
     return jsonify(data_source.geoJSON)
+
+
+@app.route('/aviation/flight_data')
+def flight_data():
+    return jsonify(data_source.flight_data) 
 
 @app.route('/aviation/map')
 def get_map():
