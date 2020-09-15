@@ -10,22 +10,50 @@ uri = "mongodb://localhost:27017/"
 client = MongoClient(uri)
 db = client.get_database("aviation")
 
-#db.planes_visited.find({"registration": "B-6533"})
-# [{'icao24': '4601f5', 'baro_altitude': 4884.42, 'velocity': 121.93, 'vertical_rate': 0.33, 'longitude': 25.1581, 'latitude': 58.6924, 'on_ground': False, 'registration': 'OH-ATH', 'manufacturername': 'Avions De Transport Regional', 'model': 'ATR 72 500', 'operator': '', 'owner': 'Nordic Regional Airlines'}]
 
-
-def get_one_plane_coords():
-    # plane_coords = []
+def get_plane_flight_path(data):
     collection = db.get_collection("planes_visited")
-    cursor = collection.find({"registration": "B-6533"}, projection= {"_id": 0})
-    for plane in cursor:
-        return plane
-        # plane_coords.append(plane)
-    # return plane_coords
-    
+    for planes in data: 
+        cursor = collection.find({"registration": planes['registration']}, projection= {"_id": 0})
+        for plane in cursor:
+            print(f"CURSOR: {plane}")
+            return plane
 
 
-def find(icao):
+def airspace_save_point(data):
+    collection = db.get_collection("planes_visited")
+    for plane in data:
+        cursor = collection.find_one({"registration": plane['registration']})
+        # If plane is not in the DB, add it
+        if cursor != None:
+            print("Got the plane!")
+            collection.update( { "registration": plane['registration'] }, { "$addToSet": {  "flights.0.flight_data": {"latitude": plane['latitude'], "longitude": plane['longitude'], "time_stamp": time.time()} } } )
+
+        else:
+            data_to_store = {
+                "registration": plane['registration'],
+                "manufacturername": plane['manufacturername'],
+                "model": plane['model'],
+                "flights": [
+                    {
+                        "enter": time.time(),
+                        "registration": plane['registration']
+                        "left": None,
+                        "flight_data": [
+                            {
+                                "latitude": plane['latitude'],
+                                "longitude": plane['longitude'],
+                                "time_stamp": time.time(),
+                            }
+                        ]
+                    }
+                ]
+            }
+            db.planes_visited.insert_one(data_to_store)
+            print("No, this plane does not exist in the DB. Adding it")
+
+
+def find_plane_from_db(icao):
     found_planes = []
     collection = db.get_collection("planes_3sept")
     filter_ = {
@@ -96,48 +124,13 @@ def geo_coords(data):
     return coords
 
 
-def airspace_save_point(data):
-    collection = db.get_collection("planes_visited")
-    for plane in data:
-        cursor = collection.find_one({"registration": plane['registration']})
-        # If plane is not in the DB, add it
-        if cursor != None:
-            print("Got the plane!")
-            collection.update( { "registration": plane['registration'] }, { "$addToSet": {  "flights.0.flight_data": {"latitude": plane['latitude'], "longitude": plane['longitude'], "time_stamp": time.time()} } } )
-            # db.planes_visited.update( { "registration": "G-VNEW" }, { $addToSet: {  "flights.0.flight_data": {"latitude": 35.333, "longitude": 38.55555} } } )
-
-        else:
-            data_to_store = {
-                "registration": plane['registration'],
-                "manufacturername": plane['manufacturername'],
-                "model": plane['model'],
-                "flights": [
-                    {
-                        "enter": time.time(),
-                        "left": None,
-                        "flight_data": [
-                            {
-                                "latitude": plane['latitude'],
-                                "longitude": plane['longitude'],
-                                "time_stamp": time.time()
-                            }
-                        ]
-                    }
-                ]
-            }
-            db.planes_visited.insert_one(data_to_store)
-            print("No, this plane does not exist in the DB. Adding it")
-
-
-
-
 def get_data():
     while True:
         planes_in_db = []
         planes_not_in_db = []
         api_res = get_api_resp()
         for plane in api_res:
-            res = find(plane['icao24'])
+            res = find_plane_from_db(plane['icao24'])
             if res != None:
                 planes_in_db.append(res)
             elif res == None and plane['on_ground']:
@@ -148,15 +141,14 @@ def get_data():
         merge_data_in_DB = merge_data(api_res, planes_in_db)
         # print(f"MERGED DATA: {merge_data_in_DB}")
         airspace_save_point(merge_data_in_DB)
-        flight_data = get_one_plane_coords()
-        print(f"FLIGHT DATA: {flight_data}")
+        flight_path = get_plane_flight_path(merge_data_in_DB)
         get_geo_json = geo_coords(merge_data_in_DB)
         for listener in listeners:
-            listener.on_data(merge_data_in_DB, get_geo_json, flight_data)
+            listener.on_data(merge_data_in_DB, get_geo_json, flight_path)
 
         # print(f"PLANES IN DB: {merge_data_in_DB}")
         # print(f"PLANES NOT IN DB: {planes_not_in_db}")
-        # print(f"TOTAL PLANES IN AIRSPACE: {len(merge_data_in_DB)} + {len(planes_not_in_db)}")
+        print(f"TOTAL PLANES IN AIRSPACE: {len(merge_data_in_DB)} + {len(planes_not_in_db)}")
         time.sleep(10)
 
 listeners = []

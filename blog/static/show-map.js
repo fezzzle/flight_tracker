@@ -24,37 +24,40 @@ function callFlightDataFromDB() {
     request.onload = function() {
         let flights = []
         if (this.status >= 200 && this.status < 400) {
-            let api_resp = JSON.parse(this.response)
-            console.log(api_resp.flights[0].flight_data)
-            let planeFlights = api_resp.flights[0].flight_data
+            let json = get_geojson(this.response)
+            let planeFlights = json.flights[0].flight_data
             planeFlights.forEach((flight) => {
+                console.log("LINE 30: ", json.flights[0])
                 flights.push(Array.from([flight.longitude, flight.latitude]))
             });
-            map.addSource('route', {
-                'type': 'geojson',
-                'data': {
-                    'type': 'Feature',
-                    'properties': {},
-                    'geometry': {
-                        'type': 'LineString',
-                        'coordinates': flights
+            try {
+                map.addSource(flight.registration, {
+                    'type': 'geojson',
+                    'data': {
+                        'type': 'Feature',
+                        'properties': {},
+                        'geometry': {
+                            'type': 'LineString',
+                            'coordinates': flights
+                        }
                     }
-                }
-            });
-            map.addLayer({
-                'id': 'route',
-                'type': 'line',
-                'source': 'route',
-                'layout': {
-                    'line-join': 'round',
-                    'line-cap': 'round'
-                },
-                'paint': {
-                    'line-color': '#89c',
-                    'line-width': 2
-                }
-            });
-
+                });
+                map.addLayer({
+                    'id': 'route',
+                    'type': 'line',
+                    'source': 'route',
+                    'layout': {
+                        'line-join': 'round',
+                        'line-cap': 'round'
+                    },
+                    'paint': {
+                        'line-color': '#89c',
+                        'line-width': 2
+                    }
+                });
+            } catch (e) {
+                console.log(e)
+            }
         };
     };
     request.send();
@@ -62,7 +65,6 @@ function callFlightDataFromDB() {
 
 function callCurrentFlights() {
     var request = new XMLHttpRequest();
-
     request.open('GET', currentFlights, true);
     request.onload = function() {
         if (this.status >= 200 && this.status < 400) {
@@ -84,7 +86,7 @@ function setMarkerData(data) {
     REG: ${data.properties.id},
     SPD: ${data.properties.speed},
     OWN: ${data.properties.owner},
-    MKE: ${data.properties.model},
+    PLANE: ${data.properties.model},
     ALT: ${data.properties.altitude}
     `
     // create a DOM element for the marker
