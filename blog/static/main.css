@@ -1,20 +1,36 @@
-.media {
-  margin-left: 150px;
-  max-width: 70%;
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@500&display=swap');
+
+* {
+  font-family: 'Roboto Mono', monospace;
 }
 
 body {
-  background: #fafafa;
-  margin-top: 5rem;
+  background: #4F5D75;
+  margin-top: 2rem;
 }
 
 html {
   font-size: 14px;
+  background-color: #E5EAFA;
 }
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
+
+.section {
+  background-color: #6B7C9A;
+  margin-top: 2rem;
+}
+
+.level {
+  font-size: 18px;
+}
+
+@media (max-width: 768px) {
+  html, .level {
+    font-size: 12px;
   }
+}
+
+nav {
+  height: 10rem;
 }
 
 .content-section {
@@ -27,14 +43,12 @@ html {
 
 .container {
   max-width: 960px;
+  margin-bottom: 2rem;
+  max-height: 100vh;
 }
 
-.pricing-header {
-  max-width: 700px;
-}
-
-.card-deck .card {
-  max-width: 220px;
+.large-font {
+  font-size: 30px;
 }
 
 .plane-img {
@@ -48,7 +62,19 @@ html {
   margin-top: 50px;
 }
 
-/* .marker {
-  height: 60px;
-  width: 60px;
-} */
+.title {
+  margin-bottom: 10px;
+}
+
+a {
+  color: #F2F3F6;
+  text-transform: uppercase;
+}
+
+a:hover {
+  color: #FFFFFF;
+}
+
+.footer-name {
+  color:#4F5D75;
+}

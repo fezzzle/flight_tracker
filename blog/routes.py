@@ -74,31 +74,31 @@ posts = [
     {
         'author': 'Corey Schafer',
         'title': 'Blog Post 1',
-        'content': 'First post content about something cool',
+        'content': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed rutrum faucibus orci ut convallis. Vestibulum ullamcorper nulla nec felis blandit, sit amet pellentesque sem dignissim. Duis pretium diam ex, sed sollicitudin justo bibendum in. Suspendisse bibendum vulputate eros a eleifend. Maecenas urna nisi, varius eu aliquet et, sagittis quis nisl. Suspendisse aliquet neque non turpis ultrices, ac sagittis massa maximus. In molestie ut diam aliquam auctor. Sed vitae bibendum lectus. Etiam facilisis accumsan pharetra. Integer sagittis dolor eu mollis condimentum. Vestibulum tempor tempor sapien vel vestibulum. Nam a sapien ac metus dignissim sollicitudin ac at libero. Duis vitae porttitor risus. Donec euismod dapibus cursus. Praesent sed volutpat tortor, id condimentum ante. In eget facilisis ex.',
         'date_posted': 'April 20, 2018'
     },
     {
         'author': 'Jane Doe',
         'title': 'Blog Post 2',
-        'content': 'Second post content',
+        'content': 'Phasellus quam neque, cursus vel lorem dictum, elementum tristique arcu. Fusce placerat orci a enim sagittis, eget tristique elit sagittis. Nulla sit amet tortor sed ex aliquam aliquam. Proin purus neque, pretium nec porta faucibus, iaculis cursus justo. Nullam nec risus vel nisi pellentesque gravida. Sed malesuada commodo quam, et dignissim lacus. Proin vestibulum blandit velit et eleifend. Mauris augue orci, volutpat sed lectus id, posuere semper dolor. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Nunc scelerisque tempus ligula nec placerat. Nullam a dui sed tellus lacinia tempor. Ut ac risus ac augue sodales pulvinar in vehicula risus.',
         'date_posted': 'April 21, 2018'
     },
     {
         'author': 'Jane Doe',
         'title': 'Blog Post 2',
-        'content': 'Second post content',
+        'content': 'Phasellus quam neque, cursus vel lorem dictum, elementum tristique arcu. Fusce placerat orci a enim sagittis, eget tristique elit sagittis. Nulla sit amet tortor sed ex aliquam aliquam. Proin purus neque, pretium nec porta faucibus, iaculis cursus justo. Nullam nec risus vel nisi pellentesque gravida. Sed malesuada commodo quam, et dignissim lacus. Proin vestibulum blandit velit et eleifend. Mauris augue orci, volutpat sed lectus id, posuere semper dolor. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Nunc scelerisque tempus ligula nec placerat. Nullam a dui sed tellus lacinia tempor. Ut ac risus ac augue sodales pulvinar in vehicula risus.',
         'date_posted': 'April 21, 2018'
     },
     {
         'author': 'Corey Schafer',
         'title': 'Blog Post 1',
-        'content': 'First post content about something cool',
+        'content': 'Phasellus quam neque, cursus vel lorem dictum, elementum tristique arcu. Fusce placerat orci a enim sagittis, eget tristique elit sagittis. Nulla sit amet tortor sed ex aliquam aliquam. Proin purus neque, pretium nec porta faucibus, iaculis cursus justo. Nullam nec risus vel nisi pellentesque gravida. Sed malesuada commodo quam, et dignissim lacus. Proin vestibulum blandit velit et eleifend. Mauris augue orci, volutpat sed lectus id, posuere semper dolor. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Nunc scelerisque tempus ligula nec placerat. Nullam a dui sed tellus lacinia tempor. Ut ac risus ac augue sodales pulvinar in vehicula risus.',
         'date_posted': 'April 20, 2018'
     },
     {
         'author': 'Timmyt Schafer',
         'title': 'Something about beer',
-        'content': 'First post content about something cool',
+        'content': 'Phasellus quam neque, cursus vel lorem dictum, elementum tristique arcu. Fusce placerat orci a enim sagittis, eget tristique elit sagittis. Nulla sit amet tortor sed ex aliquam aliquam. Proin purus neque, pretium nec porta faucibus, iaculis cursus justo. Nullam nec risus vel nisi pellentesque gravida. Sed malesuada commodo quam, et dignissim lacus. Proin vestibulum blandit velit et eleifend. Mauris augue orci, volutpat sed lectus id, posuere semper dolor. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Nunc scelerisque tempus ligula nec placerat. Nullam a dui sed tellus lacinia tempor. Ut ac risus ac augue sodales pulvinar in vehicula risus.',
         'date_posted': 'April 20, 2018'
     },
 ]

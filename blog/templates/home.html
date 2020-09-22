@@ -1,38 +1,25 @@
 {% extends "layout.html" %}
 {% block content %}
-<main role="main" class="container">
-    <div class="row">
-        <div class="col-md-8">
-            {% for post in posts %}
-            <article class="media content-section">
-                <div class="media-body">
-                    <div class="article-metadata">
-                    <a class="mr-2" href="#">{{ post.author }}</a>
-                    <small class="text-muted">{{ post.date_posted }}</small>
-                  </div>
-                  <h2><a class="article-title" href="#">{{ post.title }}</a></h2>
-                  <p class="article-content">{{ post.content }}</p>
-                </div>
-              </article>
-              {% endfor %}
-            </div>
-            <div class="col-md-4">
-              {% for flight in flights %}
-              <div class="card mb-4 shadow-sm">
-                <div class="card-header">
-                  <h4 class="my-0 font-weight-normal">{{ flight.owner }}</h4>
-                </div>
-                <div class="card-body">
-                  <h1 class="card-title">{{ flight.manufacturername }}<small class="text-muted"></small></h1>
-                  <h1 class="card-title">{{ flight.model }}<small class="text-muted"></small></h1>
-                  <ul class="list-unstyled mt-3 mb-4">
-                    <li>Registration: {{ flight.registration }}</li>
-                  </ul>
-                  <button type="button" class="btn btn-sm btn-block btn-primary">More info...</button>
-                </div>
-              </div>
-              {% endfor %}
-            </div>
-          </div>
-        </main>
+{% for post in posts %}
+<section class="section">
+  <div class="container">
+    <a href=""><h2 class="title">Section</h1></a>
+    <h3 class="subtitle">
+      {{post.content}}
+    </h2>
+  </div>
+</section>
+{% endfor %}
+
+          {% for flight in flights %}
+          {% endfor %}
+
+<footer class="footer">
+  <div class="content has-text-centered">
+    <p>
+      <strong>Aviation Blog</strong> by <a href="https://www.github.com/fezzzle" class="footer-name">Martin Paju</a>
+    </p>
+  </div>
+</footer>
+          
 {% endblock content %}

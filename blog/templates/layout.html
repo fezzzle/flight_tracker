@@ -7,27 +7,31 @@
     <script src="{{ url_for('static', filename='mapbox-gl.js') }}"></script>
     
     <link href="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css" rel="stylesheet" />
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.0/css/bulma.min.css">
+    <!-- <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet"> -->
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
     
   </head>
   <body>
-    <header class="site-header">
-      <nav class="navbar navbar-dark bg-dark navbar-expand-md fixed-top">
-        <div class="container">
-          <a class="navbar-brand mr-4">Aviation Blog</a>
-          <div class="collapse navbar-collapse" id="navbarToggle">
-            <div class="navbar-nav mr-auto">
-              <a class="nav-item nav-link" href="{{  url_for('home') }}">Home</a>
-              <a class="nav-item nav-link" href="{{  url_for('aviation') }}">Current aircrafts</a>
-              <a class="nav-item nav-link" href="{{  url_for('get_map') }}">Map</a>
-            </div>
-            <div class="navbar-nav">
-            </div>
-          </div>
-        </div>
+    <div class="container">
+      <nav class="level">
+        <p class="level-item has-text-centered">
+            <a href="{{  url_for('home') }}">Home</a>
+        </p>
+        <p class="level-item has-text-centered">
+            <a href="{{  url_for('aviation') }}">Current aircrafts</a>
+        </p>
+        <p class="level-item has-text-centered large-font">
+            <a href="#">AVIATION</a>
+        </p>
+        <p class="level-item has-text-centered">
+            <a href="{{  url_for('get_map') }}">Map</a>
+          </p>
+          <p class="level-item has-text-centered">
+            <a href="{{  url_for('home') }}">About</a>
+        </p>
       </nav>
-    </header>
+    </div>
     {% block content %}{% endblock %}
     </body>
   </html>
