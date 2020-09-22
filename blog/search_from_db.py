@@ -16,7 +16,6 @@ def get_plane_flight_path(data):
     for planes in data: 
         cursor = collection.find({"registration": planes['registration']}, projection= {"_id": 0})
         for plane in cursor:
-            print(f"CURSOR: {plane}")
             return plane
 
 
@@ -37,7 +36,7 @@ def airspace_save_point(data):
                 "flights": [
                     {
                         "enter": time.time(),
-                        "registration": plane['registration']
+                        "registration": plane['registration'],
                         "left": None,
                         "flight_data": [
                             {
