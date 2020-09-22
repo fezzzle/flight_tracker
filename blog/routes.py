@@ -4,7 +4,6 @@ from blog import search_from_db
 from blog import scrape_photos
 
 
-
 class Observer:
     def __init__(self):
         self.flights = None
@@ -46,8 +45,6 @@ def show_user_profile(user):
 @app.route('/plane/<registration>')
 def plane(registration):
     image = scrape_photos.plane_img(registration)
-    # Get certain plane from data to send it to Flask
-    # Not sure if this works at the moment
     try:
         for plane in data_source.flights:
             if plane['registration'] == registration:
