@@ -12,6 +12,7 @@ Project is created with:
 * Mapbox GL JS v1.12.0
 * MongoDB
 * Flask v1.1
+* Bulma
 
 ## Setup
 1. Need aircraftDatabase.csv from [Opensky-network](https://opensky-network.org/datasets/metadata/)

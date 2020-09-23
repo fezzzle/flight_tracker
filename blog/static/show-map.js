@@ -25,7 +25,6 @@ let map = new mapboxgl.Map({
                 let latestPoint = latestPointOnMapArray[latestPointOnMapArray.length - 5]
                 let lnglat = [latestPoint['longitude'], latestPoint['latitude']]
                 if (plane_direction_data[element.registration] === undefined) {
-                    console.log("LATEST POINT: ", lnglat)
                     plane_direction_data[element.registration] = lnglat;
                 }
             });
@@ -33,9 +32,6 @@ let map = new mapboxgl.Map({
     }
     request.send()
 })();
-
-
-
 
 function getBearing(p1, p2) {
     var lon1 = toRad(p1[0]);
@@ -60,7 +56,6 @@ function toDeg(radian) {
 }
 
 function callCurrentFlights() {
-    // console.log("LINE 65: ", plane_direction_data)
     var request = new XMLHttpRequest();
     request.open('GET', currentFlights, true);
     request.onload = function() {
@@ -68,11 +63,7 @@ function callCurrentFlights() {
             let json = get_geojson(this.response)
             json.forEach((element) => {
                 let bearing = 0;
-                console.log(element.geometry.coordinates)
-                // console.log("LINE 76: ", element.properties.id, element.geometry.coordinates)
-                // console.log(plane_direction_data[element.properties.id], element.geometry.coordinates)
                 bearing  = getBearing(plane_direction_data[element.properties.id], element.geometry.coordinates);
-                // console.log(element.properties.id, [plane_direction_data[element.properties.id], element.geometry.coordinates], bearing)
                 plane_direction_data[element.properties.id] = element.geometry.coordinates;
 
                 setMarkerData(element, bearing)

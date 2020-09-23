@@ -27,10 +27,10 @@ def home():
 def login():
     return render_template('login.html')
 
-@app.route('/aviation')
-@app.route('/aviation/')
+@app.route('/planes')
+@app.route('/planes/')
 def aviation():
-    return render_template('aviation.html', flights=data_source.flights)
+    return render_template('planes.html', flights=data_source.flights)
 
 @app.route('/post/<int:post_id>')
 def show_post(post_id):
