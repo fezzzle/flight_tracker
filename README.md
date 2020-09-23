@@ -20,7 +20,5 @@ Project is created with:
 
 ## Images
 
-![Map]
-(https://github.com/fezzzle/flight_tracker/blob/master/map.png?raw=true)
-![Planes]
-(https://github.com/fezzzle/flight_tracker/blob/master/Planes.png?raw=true)
+![Map](https://github.com/fezzzle/flight_tracker/blob/master/map.png?raw=true)
+![Planes](https://github.com/fezzzle/flight_tracker/blob/master/Planes.png?raw=true)
