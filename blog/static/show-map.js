@@ -1,5 +1,5 @@
-const currentFlights = 'http://127.0.0.1:5000/aviation/api';
-// const flightData = 'http://127.0.0.1:5000/aviation/flight_data';
+let currentFlights = 'http://127.0.0.1:5000/aviation/api';
+let flight_data = 'http://127.0.0.1:5000/aviation/flight_data'
 let markers = [];
 let popups = [];
 let plane_direction_data = {}
@@ -10,14 +10,32 @@ let map = new mapboxgl.Map({
     container: 'map',
     style: 'mapbox://styles/mapbox/streets-v11',
     center: [25, 58.6],
-    zoom: 7
+    zoom: 6.5
 });
 
-function main() {
-    removeIcons()
-    callCurrentFlights()
-    // callFlightDataFromDB()
-}
+(function get_first_coords() {
+    var request = new XMLHttpRequest();
+    request.open('GET', flight_data, true);
+    request.onload = function() {
+        if (this.status >= 200 && this.status < 400) {
+            let json = get_geojson(this.response);
+            json.forEach((element) => {
+                let latestPointOnMapArray = element.flights[0].flight_data
+                // Getting latest point does not work because, backend has not updated that. For this feature I figured I take fifth from the back
+                let latestPoint = latestPointOnMapArray[latestPointOnMapArray.length - 5]
+                let lnglat = [latestPoint['longitude'], latestPoint['latitude']]
+                if (plane_direction_data[element.registration] === undefined) {
+                    console.log("LATEST POINT: ", lnglat)
+                    plane_direction_data[element.registration] = lnglat;
+                }
+            });
+        }
+    }
+    request.send()
+})();
+
+
+
 
 function getBearing(p1, p2) {
     var lon1 = toRad(p1[0]);
@@ -41,68 +59,22 @@ function toDeg(radian) {
     return radian * 180 / Math.PI;
 }
 
-// function callFlightDataFromDB() {
-//     var request = new XMLHttpRequest();
-//     request.open('GET', flightData, true);
-//     request.onload = function() {
-//         let flights = []
-//         if (this.status >= 200 && this.status < 400) {
-//             let json = get_geojson(this.response)
-//             let planeFlights = json.flights[0].flight_data
-//             planeFlights.forEach((flight) => {
-//                 console.log("FLIGHT: ", flight)
-//                 console.log("LINE 30: ", json.flights[0])
-//                 flights.push(Array.from([flight.longitude, flight.latitude]))
-//             });
-//             try {
-//                 map.addSource(flight.registration, {
-//                     'type': 'geojson',
-//                     'data': {
-//                         'type': 'Feature',
-//                         'properties': {},
-//                         'geometry': {
-//                             'type': 'LineString',
-//                             'coordinates': flights
-//                         }
-//                     }
-//                 });
-//                 map.addLayer({
-//                     'id': 'route',
-//                     'type': 'line',
-//                     'source': 'route',
-//                     'layout': {
-//                         'line-join': 'round',
-//                         'line-cap': 'round'
-//                     },
-//                     'paint': {
-//                         'line-color': '#89c',
-//                         'line-width': 2
-//                     }
-//                 });
-//             } catch (e) {
-//                 console.log(e)
-//             }
-//         };
-//     };
-//     request.send();
-// }
-
 function callCurrentFlights() {
+    // console.log("LINE 65: ", plane_direction_data)
     var request = new XMLHttpRequest();
     request.open('GET', currentFlights, true);
     request.onload = function() {
         if (this.status >= 200 && this.status < 400) {
             let json = get_geojson(this.response)
             json.forEach((element) => {
-                let bearing = 0
+                let bearing = 0;
+                console.log(element.geometry.coordinates)
+                // console.log("LINE 76: ", element.properties.id, element.geometry.coordinates)
+                // console.log(plane_direction_data[element.properties.id], element.geometry.coordinates)
+                bearing  = getBearing(plane_direction_data[element.properties.id], element.geometry.coordinates);
+                // console.log(element.properties.id, [plane_direction_data[element.properties.id], element.geometry.coordinates], bearing)
+                plane_direction_data[element.properties.id] = element.geometry.coordinates;
 
-                if (plane_direction_data[element.properties.id] === undefined) {
-                    plane_direction_data[element.properties.id] = element.geometry.coordinates;
-                } else {
-                    bearing  = getBearing(plane_direction_data[element.properties.id], element.geometry.coordinates);
-                    console.log(element.properties.id, [plane_direction_data[element.properties.id], element.geometry.coordinates], bearing)
-                    plane_direction_data[element.properties.id] = element.geometry.coordinates;
-                }
                 setMarkerData(element, bearing)
             });
         }
@@ -156,7 +128,11 @@ function removeIcons() {
     popups = [];
   }
 
-setIntervalAndExecute(main, 11000);
+function main() {
+    removeIcons()
+    callCurrentFlights()
+}
+setIntervalAndExecute(main, 10000);
 
 
 

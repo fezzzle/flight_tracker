@@ -1,23 +1,25 @@
 {% extends "layout.html" %}
 {% block content %}
 <main role="main" class="container">
-    <div class="row">
-        <div class="col-md-12">
-            <div class="media content-section">
-              <div class="media-body">
-                <img class="plane-img" src={{ image }} >
-                  <div class="plane-info">
-                    <p>Manufacturer: {{ flight.manufacturername }}</p>
-                    <p>Model: {{ flight.model }}</p>
-                    <p>Owner: {{ flight.owner }}</p>
-                    <p>Registration: {{ flight.registration }}</p>
-                    <p>Speed: {{ (flight.velocity * 3.6)|round|int }}</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>  
-      </main>
+  <div class="columns">
+    <div class="column is-narrow">
+      <div class="box">
+        <img class="plane-img" src={{ image }} >
+      </div>
+    </div>
+    <div class="column">
+      <div class="box">
+        <p class="title is-5">Plane info</p>
+        <p>Manufacturer: {{ flight.manufacturername }}</p>
+        <p>Model: {{ flight.model }}</p>
+        <p>Owner: {{ flight.owner }}</p>
+        <p>Registration: {{ flight.registration }}</p>
+        <p>Speed: {{ (flight.velocity * 3.6)|round|int }}</p>
+        <p>Last time in Estonia's airspace: Date</p>
+      </div>
+      </div>
+    </div>
+  </main>
   </body>
 
 {% endblock content %}

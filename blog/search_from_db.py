@@ -12,11 +12,14 @@ db = client.get_database("aviation")
 
 
 def get_plane_flight_path(data):
+    flight_paths = []
     collection = db.get_collection("planes_visited")
     for planes in data: 
         cursor = collection.find({"registration": planes['registration']}, projection= {"_id": 0})
         for plane in cursor:
-            return plane
+            # print(f"INSIDE GET PLANE FLIGHT DATA: {plane}")
+            flight_paths.append(plane)
+    return flight_paths
 
 
 def save_plane_fight_path(data):
@@ -36,7 +39,7 @@ def save_plane_fight_path(data):
                 "flights": [
                     {
                         "enter": time.time(),
-                        "registration": plane['registration'],
+                        "id": plane['registration'],
                         "left": None,
                         "flight_data": [
                             {
@@ -137,13 +140,14 @@ def get_data():
 
         merge_data_in_DB = merge_data(api_res, planes_in_db)
         save_plane_fight_path(merge_data_in_DB)
+        # print(f"MERGED DATA: {merge_data_in_DB}")
         flight_path = get_plane_flight_path(merge_data_in_DB)
         get_geo_json = geo_coords(merge_data_in_DB)
         for listener in listeners:
             listener.on_data(merge_data_in_DB, get_geo_json, flight_path)
 
         print(f"TOTAL PLANES IN AIRSPACE: {len(merge_data_in_DB)} + {len(planes_not_in_db)}")
-        time.sleep(10)
+        time.sleep(5)
 
 listeners = []
 
