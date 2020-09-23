@@ -16,3 +16,11 @@ Project is created with:
 
 ## Setup
 1. Need aircraftDatabase.csv from [Opensky-network](https://opensky-network.org/datasets/metadata/)
+
+
+## Images
+
+![Map]
+(https://github.com/fezzzle/flight_tracker/blob/master/map.png?raw=true)
+![Planes]
+(https://github.com/fezzzle/flight_tracker/blob/master/Planes.png?raw=true)
