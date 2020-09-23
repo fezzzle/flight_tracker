@@ -1,26 +1,44 @@
 {% extends "layout.html" %}
 {% block content %}
 {% for post in posts %}
-<section class="section">
+<!-- <section class="section">
   <div class="container">
     <a href=""><h2 class="title">Section</h1></a>
     <h3 class="subtitle">
       {{post.content}}
     </h2>
   </div>
-</section>
+</section> -->
 {% endfor %}
-
-          {% for flight in flights %}
-          {% endfor %}
-
-<footer class="footer">
-  <div class="content has-text-centered">
-    <p>
-      <strong>Aviation Blog</strong> by <a href="https://www.github.com/fezzzle" class="footer-name">Martin Paju</a> <br>
-      <strong>Using Opensky API and plane database</strong> <a href="https://opensky-network.org/"class="footer-name">OpenSky</a>
-    </p>
+<div class="container main">
+  <div class="tile is-ancestor">
+    <div class="tile is-parent">
+      <article class="tile is-child box">
+        <p class="title">Total planes overflown Estonia since: Date</p>
+        <p class="subtitle">8000</p>
+      </article>
+    </div>
+    <div class="tile is-parent">
+      <article class="tile is-child box">
+        <p class="title">Most visited plane:</p>
+        <p class="subtitle">A-FLDK</p>
+        <div class="content">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ornare magna eros, eu pellentesque tortor
+            vestibulum ut. Maecenas non massa sem. Etiam finibus odio quis feugiat facilisis.
+        </div>
+      </article>
+    </div>
+    <div class="tile is-parent">
+      <article class="tile is-child box">
+        <p class="title">Most popular Airline</p>
+        <p class="subtitle">Air China</p>
+        <div class="content">
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ornare magna eros, eu pellentesque tortor
+            vestibulum ut. Maecenas non massa sem. Etiam finibus odio quis feugiat facilisis.</p>
+        </div>
+      </article>
+    </div>
   </div>
-</footer>
-          
+</div>
+</div>
 {% endblock content %}

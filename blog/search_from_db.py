@@ -141,18 +141,10 @@ def get_data():
         merge_data_in_DB = merge_data(api_res, planes_in_db)
         save_plane_fight_path(merge_data_in_DB)
         flight_path = get_plane_flight_path(merge_data_in_DB)
-        print(f"IN GET DATA FLIGHT PATH: {flight_path}")
         get_geo_json = geo_coords(merge_data_in_DB)
         for listener in listeners:
             listener.on_data(merge_data_in_DB, flight_path, get_geo_json, planes_not_in_db)
-
-        self.flights = None
-        self.flight_path = None
-        self.geoJSON = None
-        self.planes_not_in_db = None
-
-        # print(planes_not_in_db)
-        # print(f"TOTAL PLANES IN AIRSPACE: {len(merge_data_in_DB)} + {len(planes_not_in_db)}")
+        print(f"TOTAL PLANES IN AIRSPACE: {len(merge_data_in_DB)} + {len(planes_not_in_db)}")
         time.sleep(5)
 
 listeners = []

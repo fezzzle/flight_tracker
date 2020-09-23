@@ -20,10 +20,11 @@ let map = new mapboxgl.Map({
         if (this.status >= 200 && this.status < 400) {
             let json = get_geojson(this.response);
             json.forEach((element) => {
-                console.log(element)
+                // console.log(element)
                 let latestPointOnMapArray = element.flights[0].flight_data
                 // Getting latest point does not work because, backend has not updated that. For this feature I figured I take fifth from the back
                 let latestPoint = latestPointOnMapArray[latestPointOnMapArray.length - 5]
+                // console.log(latestPoint)
                 let lnglat = [latestPoint['longitude'], latestPoint['latitude']]
                 if (plane_direction_data[element.registration] === undefined) {
                     plane_direction_data[element.registration] = lnglat;
@@ -99,7 +100,7 @@ function setMarkerData(data, bearing=270) {
     .addTo(map);
     markers.push(marker)
 
-    var popup = new mapboxgl.Popup({maxWidth: '300px', closeOnClick: false})
+    var popup = new mapboxgl.Popup({maxWidth: '300px', closeOnClick: true})
     .setLngLat(data.geometry.coordinates)
     .setHTML(html)
     .addTo(map);
