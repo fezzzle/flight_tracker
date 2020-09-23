@@ -4,14 +4,28 @@
   font-family: 'Roboto Mono', monospace;
 }
 
+/* #map {
+  max-height: 90vh;
+} */
+
+h1 {
+  font-size: 20px;
+  color: #D7DBE4;
+  padding: 5px;
+}
+
 body {
   background: #4F5D75;
   margin-top: 2rem;
 }
 
+.main {
+  max-height: 100vh;
+}
+
 html {
   font-size: 14px;
-  background-color: #E5EAFA;
+  background-color: #D7DBE4;
 }
 
 .section {
@@ -33,15 +47,16 @@ nav {
   height: 10rem;
 }
 
-.content-section {
-  background: #ffffff;
-  padding: 10px 20px;
-  border: 1px solid #dddddd;
-  border-radius: 10px;
-  margin-bottom: 20px;
+td > a {
+  color: #4F5D75;
+  text-transform: uppercase;
 }
 
-.container {
+td > a:hover {
+  color: #D7DBE4;
+}
+
+.container, .header {
   max-width: 960px;
   margin-bottom: 2rem;
   max-height: 100vh;
@@ -75,6 +90,14 @@ a:hover {
   color: #FFFFFF;
 }
 
+.footer {
+  background-color: #D7DBE4;
+}
+
 .footer-name {
   color:#4F5D75;
+}
+
+table {
+  min-width: 100%;
 }

@@ -8,12 +8,11 @@
     
     <link href="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.0/css/bulma.min.css">
-    <!-- <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet"> -->
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
     
   </head>
   <body>
-    <div class="container">
+    <div class="container header">
       <nav class="level">
         <p class="level-item has-text-centered">
             <a href="{{  url_for('home') }}">Home</a>
@@ -33,6 +32,6 @@
       </nav>
     </div>
     {% block content %}{% endblock %}
-    </body>
+  </body>
   </html>
   

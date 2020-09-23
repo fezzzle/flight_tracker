@@ -19,7 +19,7 @@ def get_plane_flight_path(data):
             return plane
 
 
-def airspace_save_point(data):
+def save_plane_fight_path(data):
     collection = db.get_collection("planes_visited")
     for plane in data:
         cursor = collection.find_one({"registration": plane['registration']})
@@ -105,7 +105,6 @@ def merge_data(api_res, db_res):
 def geo_coords(data):
     coords = []
     for element in data:
-        # print(element)
         if element['on_ground'] != True:
             coords.append(
                 {
@@ -137,7 +136,7 @@ def get_data():
                 planes_not_in_db.append(plane)
 
         merge_data_in_DB = merge_data(api_res, planes_in_db)
-        airspace_save_point(merge_data_in_DB)
+        save_plane_fight_path(merge_data_in_DB)
         flight_path = get_plane_flight_path(merge_data_in_DB)
         get_geo_json = geo_coords(merge_data_in_DB)
         for listener in listeners:

@@ -1,46 +1,54 @@
 {% extends "layout.html" %}
 {% block content %}
-<main role="main" class="container">
-    <div class="row">
-      <div class="col-md-12">
-        <h3>Current aircrafts in Estonia's Airspace:</h3>
-        <table class="table">
-            <thead>
-                <tr>
-                <th scope="col">#</th>
-                <th scope="col">Aircraft</th>
-                <th scope="col">Model</th>
-                <th scope="col">Airline</th>
-                <th scope="col">Altitude(f)</th>
-                <th scope="col">Speed(kph)</th>
-                <th scope="col">Registration</th>
-                <th scope="col">Testing</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for flight in flights %}
-                    <tr>
-                    <th scope="row">{{ loop.index }}</th>
-                    <td>{{ flight.manufacturername }}</td>
-                    <td>{{ flight.model }}</td>
-                    {% if flight.owner == "" %}
-                    <td>{{ flight.operator }}</td>
-                    {% else %}
-                    <td>{{ flight.owner }}</td>
-                    {% endif %}
-                    {% if flight.on_ground == True %}
-                    <td>{{ 0 }}</td>
-                    {% else %} 
-                    <td>{{ (flight.baro_altitude * 3.28)|round|int }}</td> 
-                    {% endif %}
-                    <td>{{ (flight.velocity * 3.6)|round|int }}</td>
-                    <td><a href="{{  url_for('plane', registration=flight.registration) }}">{{ flight.registration }}</a></td>
-                    <td>{{ 100}}</td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-      </div>
+<div role="main" class="container main">
+  <div class="columns is-centered">
+    <div class="column is-full">
+      <h1>Current aircrafts in Estonia's Airspace:</h1>
+      <table class="table">
+          <thead>
+              <tr>
+              <th>#</th>
+              <th>Aircraft</th>
+              <th>Model</th>
+              <th>Airline</th>
+              <th>Altitude(m)</th>
+              <th>Speed(kph)</th>
+              <th>Registration</th>
+              <th>Flown over EST</th>
+              </tr>
+          </thead>
+          <tbody>
+              {% for flight in flights %}
+                  <tr>
+                  <th>{{ loop.index }}</th>
+                  <td>{{ flight.manufacturername }}</td>
+                  <td>{{ flight.model }}</td>
+                  {% if flight.owner == "" %}
+                  <td>{{ flight.operator }}</td>
+                  {% else %}
+                  <td>{{ flight.owner }}</td>
+                  {% endif %}
+                  {% if flight.on_ground == True %}
+                  <td>{{ 0 }}</td>
+                  {% else %} 
+                  <td>{{ (flight.baro_altitude)|round|int }}</td> 
+                  {% endif %}
+                  <td>{{ (flight.velocity * 3.6)|round|int }}</td>
+                  <td><a href="{{  url_for('plane', registration=flight.registration) }}">{{ flight.registration }}</a></td>
+                  <td>None</td>
+                  </tr>
+              {% endfor %}
+          </tbody>
+      </table>
     </div>
+  </div>
+      </div>
   </main>
+  <footer class="footer">
+    <div class="content has-text-centered">
+      <p>
+        <strong>Aviation Blog</strong> by <a href="https://www.github.com/fezzzle" class="footer-name">Martin Paju</a>
+      </p>
+    </div>
+  </footer>
 {% endblock content %}
