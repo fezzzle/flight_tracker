@@ -20,6 +20,7 @@ let map = new mapboxgl.Map({
         if (this.status >= 200 && this.status < 400) {
             let json = get_geojson(this.response);
             json.forEach((element) => {
+                console.log(element)
                 let latestPointOnMapArray = element.flights[0].flight_data
                 // Getting latest point does not work because, backend has not updated that. For this feature I figured I take fifth from the back
                 let latestPoint = latestPointOnMapArray[latestPointOnMapArray.length - 5]

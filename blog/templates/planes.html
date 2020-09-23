@@ -40,6 +40,31 @@
               {% endfor %}
           </tbody>
       </table>
+      <h1>Current aircrafts that does not exist in OpenSky database:</h1>
+      <table class="table">
+        <thead>
+            <tr>
+            <th>#</th>
+            <th>icao24</th>
+            <th>Altitude(m)</th>
+            <th>Speed(kph)</th>
+            </tr>
+        </thead>
+        <tbody>
+          {% for not_in_db in planes_not_in_db %}
+          <tr>
+            <th>{{ loop.index }}</th>
+            <td>{{ not_in_db.icao24 }}</td>
+            {% if not_in_db.on_ground == True %}
+            <td>{{ 0 }}</td>
+            {% else %} 
+            <td>{{ (not_in_db.baro_altitude)|round|int }}</td> 
+            {% endif %}
+            <td>{{ (not_in_db.velocity * 3.6)|round|int }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+    </table>
     </div>
   </div>
       </div>
@@ -47,7 +72,8 @@
   <footer class="footer">
     <div class="content has-text-centered">
       <p>
-        <strong>Aviation Blog</strong> by <a href="https://www.github.com/fezzzle" class="footer-name">Martin Paju</a>
+        <strong>Aviation Blog</strong> by <a href="https://www.github.com/fezzzle" class="footer-name">Martin Paju</a> <br>
+        <strong>Using Opensky API and plane database</strong> <a href="https://opensky-network.org/"class="footer-name">OpenSky</a>
       </p>
     </div>
   </footer>

@@ -7,12 +7,14 @@ from blog import scrape_photos
 class Observer:
     def __init__(self):
         self.flights = None
+        self.flight_path = None
         self.geoJSON = None
-        self.flight_data = None
-    def on_data(self, flights, geoJSON, flight_path):
+        self.planes_not_in_db = None
+    def on_data(self, flights, flight_path, geoJSON, planes_not_in_db):
         self.flights = flights
-        self.geoJSON = geoJSON
         self.flight_path = flight_path
+        self.geoJSON = geoJSON
+        self.planes_not_in_db = planes_not_in_db
 
 data_source = Observer()
 search_from_db.add_listener(data_source)
@@ -30,7 +32,7 @@ def login():
 @app.route('/planes')
 @app.route('/planes/')
 def aviation():
-    return render_template('planes.html', flights=data_source.flights)
+    return render_template('planes.html', flights=data_source.flights, planes_not_in_db=data_source.planes_not_in_db)
 
 @app.route('/post/<int:post_id>')
 def show_post(post_id):
