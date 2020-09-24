@@ -94,7 +94,8 @@ def get_api_resp():
     payload_keys = ['icao24', 'baro_altitude', 'velocity', 'vertical_rate', 'longitude', 'latitude', 'on_ground']
     icao24_lst = []
     try:
-        api = OpenSkyApi(ENV.OPEN_SKY_API_USER, ENV.OPEN_SKY_API_PW)
+        api = OpenSkyApi("Testing321", "Testing321")
+        # api = OpenSkyApi(ENV.OPEN_SKY_API_USER, ENV.OPEN_SKY_API_PW)
         states = api.get_states(time_secs=0, icao24=None, serials=None, bbox=(57.5,59,21.5,28))
         for s in states.states:
             payload_values = []
