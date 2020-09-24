@@ -15,7 +15,11 @@ Project is created with:
 * Bulma
 
 ## Setup
-1. Need aircraftDatabase.csv from [Opensky-network](https://opensky-network.org/datasets/metadata/)
+1. Download aircraftDatabase.csv from [Opensky-network](https://opensky-network.org/datasets/metadata/)
+2. Run mongo: ```mongod --dbpath /usr/local/var/mongodb --logpath /usr/local/var/log/mongodb/mongo.log --fork```
+3. Create ```Aviation``` DB and import ```aircraftDatabase.csv```
+4. Set environmental variable in shell: ```export FLASK_APP=run```
+5. ```flask run```
 
 
 ## Images

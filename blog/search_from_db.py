@@ -9,7 +9,11 @@ import time
 
 uri = "mongodb://localhost:27017/"
 client = MongoClient(uri)
+
+# https://opensky-network.org/datasets/metadata/aircraftDatabase.csv
 db = client.get_database("aviation")
+
+# Create it
 planes_visited = db.get_collection("planes_visited")
 
 
