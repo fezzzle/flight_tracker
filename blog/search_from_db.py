@@ -1,6 +1,7 @@
 from pymongo import MongoClient
 from opensky_api import OpenSkyApi
 from blog import settings as ENV
+from datetime import datetime
 import pprint
 import threading
 import time
@@ -12,8 +13,19 @@ db = client.get_database("aviation")
 planes_visited = db.get_collection("planes_visited")
 
 
+def get_first_plane_time_stamp():
+    first_item_in_collection = db.planes_visited.find_one()
+    # return first documents timestamp to pass it into home route
+    timestamp = first_item_in_collection['flights'][0]['enter']
+    return datetime.fromtimestamp(timestamp).strftime('%d-%m-%Y %H:%M')
+
 def total_aircrafts_from_db():
     return db.planes_visited.count({})
+
+def get_last_ten_form_db():
+    cursor = db.planes_visited.find({}, {'_id': 0,'registration': 1, 'model': 1}).sort([('_id', -1)]).limit(10)
+    return list(cursor)
+    
 
 def get_plane_flight_path(data):
     flight_paths = []
@@ -37,6 +49,7 @@ def save_plane_fight_path(data):
             data_to_store = {
                 "registration": plane['registration'],
                 "manufacturername": plane['manufacturername'],
+                "owner": plane['owner'],
                 "model": plane['model'],
                 "flights": [
                     {
@@ -145,8 +158,10 @@ def get_data():
         flight_path = get_plane_flight_path(merge_data_in_DB)
         get_geo_json = geo_coords(merge_data_in_DB)
         total_planes_in_db = total_aircrafts_from_db()
+        first_time_stamp = get_first_plane_time_stamp()
+        last_ten_planes = get_last_ten_form_db()
         for listener in listeners:
-            listener.on_data(merge_data_in_DB, flight_path, get_geo_json, planes_not_in_db, total_planes_in_db)
+            listener.on_data(merge_data_in_DB, flight_path, get_geo_json, planes_not_in_db, total_planes_in_db, first_time_stamp, last_ten_planes)
         print(f"TOTAL PLANES IN AIRSPACE: {len(merge_data_in_DB)} + {len(planes_not_in_db)}")
         time.sleep(5)
 

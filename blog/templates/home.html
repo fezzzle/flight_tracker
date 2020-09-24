@@ -4,28 +4,19 @@
   <div class="tile is-ancestor">
     <div class="tile is-parent">
       <article class="tile is-child box">
-        <p class="title is-3">Total planes overflown Estonia since: Date</p>
+        <p class="title is-4">Total planes in DB overflown Estonia since:</p>
+        <p class="subtitle">{{ timestamp }}</p>
         <p class="title is-1">{{ total_planes_in_db }}</p>
       </article>
     </div>
     <div class="tile is-parent">
       <article class="tile is-child box">
-        <p class="title">Most visited plane:</p>
-        <p class="subtitle">A-FLDK</p>
-        <div class="content">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ornare magna eros, eu pellentesque tortor
-            vestibulum ut. Maecenas non massa sem. Etiam finibus odio quis feugiat facilisis.
-        </div>
-      </article>
-    </div>
-    <div class="tile is-parent">
-      <article class="tile is-child box">
-        <p class="title">Most popular Airline</p>
-        <p class="subtitle">Air China</p>
-        <div class="content">
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ornare magna eros, eu pellentesque tortor
-            vestibulum ut. Maecenas non massa sem. Etiam finibus odio quis feugiat facilisis.</p>
-        </div>
+        <p class="title">Last 10 planes:</p>
+        <ul>
+          {% for plane in last_ten_planes %}
+          <li class="">REG: {{ plane.registration }}, Model: {{ plane.model }}</li> 
+          {% endfor %}
+        </ul>
       </article>
     </div>
   </div>

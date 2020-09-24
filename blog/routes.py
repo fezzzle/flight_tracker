@@ -11,12 +11,24 @@ class Observer:
         self.geoJSON = None
         self.planes_not_in_db = None
         self.total_planes_in_db = None
-    def on_data(self, flights, flight_path, geoJSON, planes_not_in_db, total_planes_in_db):
+        self.first_time_stamp = None
+    def on_data(self, 
+                flights, 
+                flight_path, 
+                geoJSON, 
+                planes_not_in_db, 
+                total_planes_in_db, 
+                first_time_stamp,
+                last_ten_planes
+                ):
+
         self.flights = flights
         self.flight_path = flight_path
         self.geoJSON = geoJSON
         self.planes_not_in_db = planes_not_in_db
         self.total_planes_in_db = total_planes_in_db
+        self.first_time_stamp = first_time_stamp
+        self.last_ten_planes = last_ten_planes
 
 data_source = Observer()
 search_from_db.add_listener(data_source)
@@ -25,26 +37,17 @@ search_from_db.add_listener(data_source)
 @app.route('/')
 @app.route('/home')
 def home():
-    return render_template('home.html', flights=data_source.flights, total_planes_in_db=data_source.total_planes_in_db)
-
-@app.route('/login')
-def login():
-    return render_template('login.html')
+    return render_template('home.html', 
+    flights=data_source.flights, 
+    total_planes_in_db=data_source.total_planes_in_db, 
+    timestamp=data_source.first_time_stamp,
+    last_ten_planes=data_source.last_ten_planes
+    )
 
 @app.route('/planes')
 @app.route('/planes/')
 def aviation():
     return render_template('planes.html', flights=data_source.flights, planes_not_in_db=data_source.planes_not_in_db)
-
-@app.route('/post/<int:post_id>')
-def show_post(post_id):
-    return f"Post's id is {post_id}"
-
-
-@app.route('/user/<user>')
-def show_user_profile(user):
-    return render_template('user.html', user=user)
-
 
 @app.route('/plane/<registration>')
 def plane(registration):
@@ -58,7 +61,9 @@ def plane(registration):
         print("This plane does not exist in our database!")
         return render_template(plane.html)
 
-
+@app.route('/about')
+def about():
+    return render_template('about.html')
 
 @app.route('/aviation/api')
 def get_flights():
