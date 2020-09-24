@@ -1,36 +1,38 @@
 from pymongo import MongoClient
 from opensky_api import OpenSkyApi
+from blog import settings as ENV
 import pprint
 import threading
 import time
-from blog import settings as ENV
 
 
 uri = "mongodb://localhost:27017/"
 client = MongoClient(uri)
 db = client.get_database("aviation")
+planes_visited = db.get_collection("planes_visited")
 
+
+def total_aircrafts_from_db():
+    return db.planes_visited.count({})
 
 def get_plane_flight_path(data):
     flight_paths = []
-    collection = db.get_collection("planes_visited")
     for planes in data: 
-        cursor = collection.find({"registration": planes['registration']}, projection= {"_id": 0})
+        cursor = planes_visited.find({"registration": planes['registration']}, projection= {"_id": 0})
         for plane in cursor:
-            # print(f"INSIDE GET PLANE FLIGHT DATA: {plane}")
             flight_paths.append(plane)
     return flight_paths
 
 
 def save_plane_fight_path(data):
-    collection = db.get_collection("planes_visited")
     for plane in data:
-        cursor = collection.find_one({"registration": plane['registration']})
-        # If plane is not in the DB, add it
+        cursor = planes_visited.find_one({"registration": plane['registration']})
+        #If plane is in the DB, add a new position of the plane with a timestamp
         if cursor != None:
             print("Got the plane!")
-            collection.update( { "registration": plane['registration'] }, { "$addToSet": {  "flights.0.flight_data": {"latitude": plane['latitude'], "longitude": plane['longitude'], "time_stamp": time.time()} } } )
+            planes_visited.update( { "registration": plane['registration'] }, { "$addToSet": {  "flights.0.flight_data": {"latitude": plane['latitude'], "longitude": plane['longitude'], "time_stamp": time.time()} } } )
 
+        # If plane is not in the DB, add it
         else:
             data_to_store = {
                 "registration": plane['registration'],
@@ -57,7 +59,7 @@ def save_plane_fight_path(data):
 
 def find_plane_from_db(icao):
     found_planes = []
-    collection = db.get_collection("planes_3sept")
+    collection_of_aircrafts = db.get_collection("planes_3sept")
     filter_ = {
         "$and": [ { "icao24": icao }, { "manufacturername": { "$ne": "" } } ] }
     projection_ = {
@@ -70,7 +72,7 @@ def find_plane_from_db(icao):
         "owner": 1
     }
 
-    cursor = collection.find(filter=filter_, projection=projection_)
+    cursor = collection_of_aircrafts.find(filter=filter_, projection=projection_)
     for icao_code in cursor:
         return icao_code
 
@@ -142,8 +144,9 @@ def get_data():
         save_plane_fight_path(merge_data_in_DB)
         flight_path = get_plane_flight_path(merge_data_in_DB)
         get_geo_json = geo_coords(merge_data_in_DB)
+        total_planes_in_db = total_aircrafts_from_db()
         for listener in listeners:
-            listener.on_data(merge_data_in_DB, flight_path, get_geo_json, planes_not_in_db)
+            listener.on_data(merge_data_in_DB, flight_path, get_geo_json, planes_not_in_db, total_planes_in_db)
         print(f"TOTAL PLANES IN AIRSPACE: {len(merge_data_in_DB)} + {len(planes_not_in_db)}")
         time.sleep(5)
 

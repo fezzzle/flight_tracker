@@ -1,21 +1,11 @@
 {% extends "layout.html" %}
 {% block content %}
-{% for post in posts %}
-<!-- <section class="section">
-  <div class="container">
-    <a href=""><h2 class="title">Section</h1></a>
-    <h3 class="subtitle">
-      {{post.content}}
-    </h2>
-  </div>
-</section> -->
-{% endfor %}
 <div class="container main">
   <div class="tile is-ancestor">
     <div class="tile is-parent">
       <article class="tile is-child box">
-        <p class="title">Total planes overflown Estonia since: Date</p>
-        <p class="subtitle">8000</p>
+        <p class="title is-3">Total planes overflown Estonia since: Date</p>
+        <p class="title is-1">{{ total_planes_in_db }}</p>
       </article>
     </div>
     <div class="tile is-parent">
