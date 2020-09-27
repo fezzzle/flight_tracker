@@ -20,8 +20,11 @@ planes_visited = db.get_collection("planes_visited")
 def get_first_plane_time_stamp():
     first_item_in_collection = db.planes_visited.find_one()
     # return first documents timestamp to pass it into home route
-    timestamp = first_item_in_collection['flights'][0]['enter']
-    return datetime.fromtimestamp(timestamp).strftime('%d-%m-%Y %H:%M')
+    try:
+        timestamp = first_item_in_collection['flights'][0]['enter']
+        return datetime.fromtimestamp(timestamp).strftime('%d-%m-%Y %H:%M')
+    except Exception:
+        return time.time()
 
 def total_aircrafts_from_db():
     return db.planes_visited.count({})
