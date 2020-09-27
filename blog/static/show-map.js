@@ -1,5 +1,5 @@
-let currentFlights = 'http://127.0.0.1:5000/aviation/api';
-let flight_data = 'http://127.0.0.1:5000/aviation/flight_data'
+let currentFlights = 'http://207.154.211.55:5000/aviation/api';
+let flight_data = 'http://207.154.211.55:5000/aviation/flight_data'
 let markers = [];
 let popups = [];
 let plane_direction_data = {}
@@ -9,8 +9,8 @@ mapboxgl.accessToken = 'pk.eyJ1Ijoiam9obnNtb3RoIiwiYSI6ImNrZWEycnRrdjAyZzYyd3AwY
 let map = new mapboxgl.Map({
     container: 'map',
     style: 'mapbox://styles/mapbox/streets-v11',
-    center: [25, 58.6],
-    zoom: 6.5
+    center: [25, 58.8],
+    zoom: 6
 });
 
 (function get_first_coords() {
