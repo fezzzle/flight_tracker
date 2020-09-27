@@ -79,7 +79,7 @@ def save_plane_fight_path(data):
 
 def find_plane_from_db(icao):
     found_planes = []
-    collection_of_aircrafts = db.get_collection("planes_3sept")
+    collection_of_aircrafts = db.get_collection("planes_27sept")
     filter_ = {
         "$and": [ { "icao24": icao }, { "manufacturername": { "$ne": "" } } ] }
     projection_ = {
