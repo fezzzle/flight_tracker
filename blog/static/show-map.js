@@ -1,5 +1,5 @@
-let currentFlights = 'http://127.0.0.1:5000/aviation/api';
-let flight_data = 'http://127.0.0.1:5000/aviation/flight_data'
+let currentFlights = 'http://207.154.211.55:5000/aviation/api';
+let flight_data = 'http://207.154.211.55:5000//aviation/flight_data'
 let markers = [];
 let popups = [];
 let plane_direction_data = {}
