@@ -149,6 +149,7 @@ def get_data():
         planes_in_db = []
         planes_not_in_db = []
         api_res = get_api_resp()
+        print(api_res)
         for plane in api_res:
             res = find_plane_from_db(plane['icao24'])
             if res != None:

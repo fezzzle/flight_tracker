@@ -17,9 +17,10 @@ Project is created with:
 ## Setup
 1. Download aircraftDatabase.csv from [Opensky-network](https://opensky-network.org/datasets/metadata/)
 2. Run mongo: ```mongod --dbpath /usr/local/var/mongodb --logpath /usr/local/var/log/mongodb/mongo.log --fork```
-3. Create ```Aviation``` DB and import ```aircraftDatabase.csv```
-4. Set environmental variable in shell: ```export FLASK_APP=run```
-5. ```flask run```
+3. Create ```Aviation``` DB and import ```aircraftDatabase.csv``` and create a collection named ```planes_visited``` inside aviation DB
+4. Install python API from [Opensky Python API](https://github.com/openskynetwork/opensky-api)
+5. Set environmental variable in shell: ```export FLASK_APP=run```
+6. ```flask run```
 
 
 ## Images
