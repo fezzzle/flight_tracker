@@ -152,7 +152,7 @@ def get_data():
         planes_in_db = []
         planes_not_in_db = []
         api_res = get_api_resp()
-        print(api_res)
+        # print(api_res)
         for plane in api_res:
             res = find_plane_from_db(plane['icao24'])
             if res != None:
@@ -172,6 +172,7 @@ def get_data():
         for listener in listeners:
             listener.on_data(merge_data_in_DB, flight_path, get_geo_json, planes_not_in_db, total_planes_in_db, first_time_stamp, last_ten_planes)
         print(f"TOTAL PLANES IN AIRSPACE: {len(merge_data_in_DB)} + {len(planes_not_in_db)}")
+        print(f"{merge_data_in_DB}")
         time.sleep(5)
 
 listeners = []
