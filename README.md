@@ -1,6 +1,9 @@
 # Flight tracker
 My pet project which is created in Python, javaScript and MongoDB
 
+## TODO:
+Rewrite logic, use Django and use SQL instead of NoSQL
+
 ## Table of contents
 * [General info](#general-info)
 * [Technologies](#technologies)
